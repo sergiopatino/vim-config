@@ -157,13 +157,15 @@ nmap <silent> <Leader>th :nohlsearch<CR>
 nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
 
 " Tabs
-nnoremap <silent> g0 :<C-u>tabfirst<CR>
-nnoremap <silent> g$ :<C-u>tablast<CR>
-nnoremap <silent> gr :<C-u>tabprevious<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
+nnoremap <silent> f0 :<C-u>tabfirst<CR>
+nnoremap <silent> f$ :<C-u>tablast<CR>
+nnoremap <silent> fl :<C-U>tabnext<CR>
+nnoremap <silent> fh :<C-U>tabprevious<CR>
+
+" Move tabs left or right
+nnoremap <silent> <Leader>] :<C-u>tabm +1<CR>
+nnoremap <silent> <Leader>[ :<C-u>tabm -1<CR>
+
 " Uses g:lasttab set on TabLeave in MyAutoCmd
 let g:lasttab = 1
 nmap <silent> \\ :execute 'tabn '.g:lasttab<CR>

@@ -76,10 +76,15 @@ if dein#tap('nerdtree')
 	let g:NERDTreeMapCloseChildren = 'T'
 	let g:NERDTreeMapToggleHidden = '.'
 
-	nnoremap <silent> <LocalLeader>e :<C-u>let NERDTreeWinPos=0 \| NERDTreeToggle<CR>
-	nnoremap <silent> <LocalLeader>a :<C-u>let NERDTreeWinPos=0 \| NERDTreeFind<CR>
-	nnoremap <silent> <LocalLeader>E :<C-u>let NERDTreeWinPos=1 \| NERDTreeToggle<CR>
-	nnoremap <silent> <LocalLeader>A :<C-u>let NERDTreeWinPos=1 \| NERDTreeFind<CR>
+	nnoremap <silent> <LocalLeader>e :<C-u>let NERDTreeWinPos=0 \| NERDTreeTabsToggle<CR>
+	nnoremap <silent> <LocalLeader>i :<C-u>let NERDTreeWinPos=1 \| NERDTreeTabsToggle<CR>
+	nnoremap <silent> <LocalLeader>E :<C-u>let NERDTreeWinPos=0 \| NERDTreeFind<CR>
+	nnoremap <silent> <LocalLeader>I :<C-u>let NERDTreeWinPos=1 \| NERDTreeFind<CR>
+endif
+
+if dein#tap('nerdtree-tabs')
+	let g:nerdtree_tabs_synchronize_view = 1
+  let g:nerdtree_tabs_synchronize_focus = 1
 endif
 
 if dein#tap('neosnippet.vim')
@@ -377,5 +382,15 @@ if dein#tap('vim-textobj-function')
 	xmap <silent> af <Plug>(textobj-function-a)
 	xmap <silent> if <Plug>(textobj-function-i)
 endif
+
+if dein#tap('ale')
+	highlight ALEErrorSign ctermbg=NONE ctermfg=red
+	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+endif
+
+if dein#tap('vim-json')
+	let g:vim_json_syntax_conceal = 1
+endif
+
 
 " vim: set ts=2 sw=2 tw=80 noet :

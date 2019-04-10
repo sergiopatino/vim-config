@@ -26,9 +26,9 @@ hi TabLineFill ctermfg=234 ctermbg=236 guifg=#1C1C1C guibg=#303030 cterm=NONE gu
 " TabLine: Not-active tab page label
 hi TabLine     ctermfg=243 ctermbg=236 guifg=#767676 guibg=#303030 cterm=NONE gui=NONE
 " TabLineSel: Active tab page label
-hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#626262 guibg=#1C1C1C cterm=NONE gui=NONE
+hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#1a1a1a guibg=#82a9a9 cterm=NONE gui=NONE
 " Custom
-highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#262626 guibg=#1C1C1C
+highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#82a9a9 guibg=#1C1C1C
 highlight TabLineAlt       ctermfg=252 ctermbg=238 guifg=#D0D0D0 guibg=#444444
 highlight TabLineAltShade  ctermfg=238 ctermbg=236 guifg=#444444 guibg=#303030
 
@@ -44,7 +44,7 @@ function! Tabline() abort "{{{
 		if i + 1 == nr
 			" Active tab
 			let s:tabline .=
-				\ '%#TabLineSelShade#░%#TabLineSel#'.
+				\ '%#TabLineSelShade#░%#TabLineSel# '.
 				\ '%'.(i+1).'T%{badge#label('.(i+1).', "▛", "N/A")} '.
 				\ '%#TabLineFill#▞ '
 		else
@@ -178,6 +178,7 @@ let g:NERDTreeIndicatorMapCustom = {
 
 let g:NERDTreeDirArrowExpandable = '▷'
 let g:NERDTreeDirArrowCollapsible = '▼'
+let g:NERDTreeStatusline = ' NERDTree'
 
 highlight! NERDTreeOpenable ctermfg=132 guifg=#B05E87
 highlight! def link NERDTreeClosable NERDTreeOpenable
@@ -197,6 +198,10 @@ highlight! def link NERDTreeGitStatusUnmerged Label
 highlight! def link NERDTreeGitStatusDirDirty Constant
 highlight! def link NERDTreeGitStatusDirClean DiffAdd
 highlight! def link NERDTreeGitStatusUnknown Comment
+
+" Fix for folder icon color
+" https://github.com/ryanoasis/vim-devicons/issues/250
+highlight! link NERDTreeFlags NERDTreeDir
 
 function! s:NERDTreeHighlight()
 	for l:name in keys(g:NERDTreeIndicatorMapCustom)

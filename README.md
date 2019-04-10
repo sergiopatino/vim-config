@@ -565,9 +565,11 @@ Key   | Mode | Action
 Key   | Mode | Action
 ----- |:----:| ------------------
 `q` | Normal | Quit window (and Vim, if last window)
-`Ctrl`+`Tab` | Normal | Next tab
-`Ctrl`+`Shift`+`Tab` | Normal | Previous tab
-`\`+`\` | Normal | Jump to last tab
+`f`+`l` | Normal | Next tab
+`f`+`h` | Normal | Previous tab
+`f`+`0` | Normal | First tab
+`f`+`$` | Normal | Last tab
+`\`+`\` | Normal | Jump to last active tab
 `s`+`v` | Normal | Horizontal split (:split)
 `s`+`g` | Normal | Vertical split (:vsplit)
 `s`+`t` | Normal | Open new tab (:tabnew)
