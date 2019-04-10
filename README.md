@@ -762,7 +762,7 @@ Key   | Mode | Action
 
 ## Credits & Contribution
 
-[Rafi]: https://github.com/rafi/vim-config
-[Shougo]: https://github.com/Shougo
-[lazy-loaded]: ./config/plugins.yaml#L28
-[yaml2json]: https://github.com/bronze1man/yaml2json
+[Rafi](https://github.com/rafi/vim-config)
+[Shougo](https://github.com/Shougo)
+[lazy-loaded](./config/plugins.yaml#L28)
+[yaml2json](https://github.com/bronze1man/yaml2json)
