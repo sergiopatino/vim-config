@@ -26,9 +26,9 @@ hi TabLineFill ctermfg=234 ctermbg=236 guifg=#1C1C1C guibg=#303030 cterm=NONE gu
 " TabLine: Not-active tab page label
 hi TabLine     ctermfg=243 ctermbg=236 guifg=#767676 guibg=#303030 cterm=NONE gui=NONE
 " TabLineSel: Active tab page label
-hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#626262 guibg=#1C1C1C cterm=NONE gui=NONE
+hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#1a1a1a guibg=#82a9a9 cterm=NONE gui=NONE
 " Custom
-highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#262626 guibg=#1C1C1C
+highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#82a9a9 guibg=#1C1C1C
 highlight TabLineAlt       ctermfg=252 ctermbg=238 guifg=#D0D0D0 guibg=#444444
 highlight TabLineAltShade  ctermfg=238 ctermbg=236 guifg=#444444 guibg=#303030
 
@@ -44,7 +44,7 @@ function! Tabline() abort "{{{
 		if i + 1 == nr
 			" Active tab
 			let s:tabline .=
-				\ '%#TabLineSelShade#░%#TabLineSel#'.
+				\ '%#TabLineSelShade#░%#TabLineSel# '.
 				\ '%'.(i+1).'T%{badge#label('.(i+1).', "▛", "N/A")} '.
 				\ '%#TabLineFill#▞ '
 		else
@@ -65,34 +65,34 @@ let &tabline='%!Tabline()'
 " }}}
 
 " Statusline {{{
-let s:stl  = " %7*%{&paste ? '=' : ''}%*"         " Paste symbol
-let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modifide symbol
-let s:stl .= "%6*%{badge#mode('⚠ ', 'Z')}"        " Read-only symbol
-let s:stl .= '%*%n'                               " Buffer number
-let s:stl .= "%6*%{badge#modified('+')}%0*"       " Write symbol
-let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
-let s:stl .= ' %<'                                " Truncate here
-let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-let s:stl .= "%4*%(%{badge#trails('⤐ %s')} %)"  " Whitespace
-let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
-let s:stl .= '%='                                 " Align to right
-let s:stl .= '%{badge#format()} %4*%*'           " File format
-let s:stl .= '%( %{&fenc} %)'                     " File encoding
-let s:stl .= '%4*%*%( %{&ft} %)'                 " File type
-let s:stl .= '%3*%2* %l/%2c%4p%% '               " Line and column
-let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
+" let s:stl  = " %7*%{&paste ? '=' : ''}%*"         " Paste symbol
+" let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modifide symbol
+" let s:stl .= "%6*%{badge#mode('⚠ ', 'Z')}"        " Read-only symbol
+" let s:stl .= '%*%n'                               " Buffer number
+" let s:stl .= "%6*%{badge#modified('+')}%0*"       " Write symbol
+" let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
+" let s:stl .= ' %<'                                " Truncate here
+" let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
+" let s:stl .= "%4*%(%{badge#trails('⤐ %s')} %)"  " Whitespace
+" let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
+" let s:stl .= '%='                                 " Align to right
+" let s:stl .= '%{badge#format()} %4*%*'           " File format
+" let s:stl .= '%( %{&fenc} %)'                     " File encoding
+" let s:stl .= '%4*%*%( %{&ft} %)'                 " File type
+" let s:stl .= '%3*%2* %l/%2c%4p%% '               " Line and column
+" let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
 
 " Non-active Statusline {{{
-let s:stl_nc = " %{badge#mode('⚠ ', 'Z')}%n"   " Readonly & buffer
-let s:stl_nc .= "%6*%{badge#modified('+')}%*"  " Write symbol
-let s:stl_nc .= ' %{badge#filename()}'         " Relative supername
-let s:stl_nc .= '%='                           " Align to right
-let s:stl_nc .= '%{&ft} '                      " File type
+" let s:stl_nc = " %{badge#mode('⚠ ', 'Z')}%n"   " Readonly & buffer
+" let s:stl_nc .= "%6*%{badge#modified('+')}%*"  " Write symbol
+" let s:stl_nc .= ' %{badge#filename()}'         " Relative supername
+" let s:stl_nc .= '%='                           " Align to right
+" let s:stl_nc .= '%{&ft} '                      " File type
 " }}}
 
 " Highlights: Statusline {{{
-highlight StatusLine   ctermfg=236 ctermbg=248 guifg=#30302c guibg=#a8a897
-highlight StatusLineNC ctermfg=236 ctermbg=242 guifg=#30302c guibg=#666656
+"highlight StatusLine   ctermfg=236 ctermbg=248 guifg=#30302c guibg=#a8a897
+"highlight StatusLineNC ctermfg=236 ctermbg=242 guifg=#30302c guibg=#666656
 
 " Filepath color
 highlight User1 guifg=#D7D7BC guibg=#30302c ctermfg=251 ctermbg=236
@@ -114,17 +114,17 @@ let s:disable_statusline =
 	\ 'denite\|defx\|tagbar\|nerdtree\|undotree\|diff\|peekaboo\|sidemenu'
 
 " Toggle Statusline {{{
-augroup statusline
-	autocmd!
-	autocmd FileType,WinEnter,BufWinEnter,BufReadPost *
-		\ if &filetype !~? s:disable_statusline
-		\ | let &l:statusline = s:stl
-		\ | endif
-	autocmd WinLeave *
-		\ if &filetype !~? s:disable_statusline
-		\ | let &l:statusline = s:stl_nc
-		\ | endif
-augroup END "}}}
+"augroup statusline
+"	autocmd!
+"	autocmd FileType,WinEnter,BufWinEnter,BufReadPost *
+"		\ if &filetype !~? s:disable_statusline
+"		\ | let &l:statusline = s:stl
+"		\ | endif
+"	autocmd WinLeave *
+"		\ if &filetype !~? s:disable_statusline
+"		\ | let &l:statusline = s:stl_nc
+"		\ | endif
+"augroup END "}}}
 
 " }}}
 
@@ -164,6 +164,7 @@ hi Defx_git_Staged    ctermfg=10 guifg=#b5bd68
 
 " Plugin: NERDTree icons and highlights {{{
 " ---------------------------------------------------------
+"  Rafi Version
 let g:NERDTreeIndicatorMapCustom = {
 	\ 'Modified':  '·',
 	\ 'Staged':    '‧',
@@ -176,8 +177,23 @@ let g:NERDTreeIndicatorMapCustom = {
 	\ 'Unknown':   '⁇'
 	\ }
 
+" Default Version
+"let g:NERDTreeIndicatorMapCustom = {
+" \ "Modified"  : "✹",
+" \ "Staged"    : "✚",
+" \ "Untracked" : "✭",
+" \ "Renamed"   : "➜",
+" \ "Unmerged"  : "═",
+" \ "Deleted"   : "✖",
+" \ "Dirty"     : "✗",
+" \ "Clean"     : "✔︎",
+" \ 'Ignored'   : '☒',
+" \ "Unknown"   : "?"
+" \ }
+
 let g:NERDTreeDirArrowExpandable = '▷'
 let g:NERDTreeDirArrowCollapsible = '▼'
+let g:NERDTreeStatusline = ' NERDTree'
 
 highlight! NERDTreeOpenable ctermfg=132 guifg=#B05E87
 highlight! def link NERDTreeClosable NERDTreeOpenable
@@ -219,6 +235,12 @@ augroup nerdtree-highlights
 	autocmd!
 	autocmd FileType nerdtree call s:NERDTreeHighlight()
 augroup END
+
+augroup nerdtreehidetirslashes
+	autocmd!
+	autocmd FileType nerdtree syntax match NERDTreeDirSlash #/$# containedin=NERDTreeDir conceal contained
+augroup end
+
 "}}}
 
 " Plugin: Tagbar icons {{{
@@ -228,12 +250,18 @@ let g:tagbar_iconchars = ['▷', '◢']
 
 " Plugin: Neomake icons {{{
 " ---------------------------------------------------------
-let g:neomake_error_sign = {'text': '⚠', 'texthl': 'ErrorMsg'}
-let g:neomake_warning_sign = {'text': '⌁', 'texthl': 'WarningSyntax'}
-let g:neomake_message_sign = {'text': '⌂', 'texthl': 'NeomakeMessageSign'}
-let g:neomake_info_sign = {'text': '⊹', 'texthl': 'NeomakeInfoSign'}
+" let g:neomake_error_sign = {'text': '!', 'texthl': 'ErrorMsg'}
+" let g:neomake_warning_sign = {'text': '!', 'texthl': 'WarningSyntax'}
+" let g:neomake_message_sign = {'text': '⌂', 'texthl': 'NeomakeMessageSign'}
+" let g:neomake_info_sign = {'text': '⍞', 'texthl': 'NeomakeInfoSign'}
 "}}}
+
 highlight! WarningSyntax ctermfg=58 guifg=#7d7629
+
+" Plugin: vim-json {{{
+" ---------------------------------------------------------
+let g:vim_json_syntax_conceal = 0
+"}}}
 
 " Plugin: GitGutter icons {{{
 " ---------------------------------------------------------
@@ -250,6 +278,11 @@ highlight! GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=NONE guibg=NONE
 highlight! GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=NONE guibg=NONE
 highlight! GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
 highlight! GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
+" }}}
+
+" Plugin: terraform {{{
+" ---------------------------------------------------------
+let g:terraform_align=1
 " }}}
 
 " Plugin: denite {{{
@@ -276,7 +309,7 @@ highlight! BookmarkAnnotationSign  ctermfg=11 guifg=#EACF49
 
 " Plugin: vim-choosewin {{{
 " ---------------------------------------------------------
-let g:choosewin_label = 'SDFJKLZXCV'
+" let g:choosewin_label = 'SDFJKLZXCV'
 let g:choosewin_overlay_enable = 1
 let g:choosewin_statusline_replace = 1
 let g:choosewin_overlay_clear_multibyte = 0

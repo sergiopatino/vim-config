@@ -68,7 +68,7 @@ if has('wildmenu')
 	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
 	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
 	set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
-	set wildignore+=__pycache__,*.egg-info,.pytest_cache
+	set wildignore+=__pycache__,*.egg-info
 endif
 
 " }}}
@@ -99,7 +99,7 @@ endif
 " Tabs and Indents {{{
 " ----------------
 set textwidth=80    " Text width maximum chars before wrapping
-set noexpandtab     " Don't expand tabs to spaces.
+set expandtab       " Expand tabs to spaces.
 set tabstop=2       " The number of spaces a tab is
 set softtabstop=2   " While performing editing operations
 set shiftwidth=2    " Number of spaces to use in auto(indent)
@@ -175,8 +175,7 @@ set list                " Show hidden characters
 set showtabline=2       " Always show the tabs line
 set winwidth=30         " Minimum width for active window
 set winminwidth=10      " Minimum width for inactive windows
-set winheight=4         " Minimum height for active window
-set winminheight=2      " Minimum height for inactive window
+set winheight=1         " Minimum height for active window
 set pumheight=15        " Pop-up menu's line height
 set helpheight=12       " Minimum help window height
 set previewheight=12    " Completion preview height
@@ -203,10 +202,6 @@ endif
 " For snippet_complete marker
 if has('conceal') && v:version >= 703
 	set conceallevel=2 concealcursor=niv
-endif
-
-if exists('&pumblend')
-	set pumblend=20
 endif
 
 " }}}

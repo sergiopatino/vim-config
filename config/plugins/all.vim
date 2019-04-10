@@ -75,11 +75,18 @@ if dein#tap('nerdtree')
 	let g:NERDTreeMapOpenRecursively = 't'
 	let g:NERDTreeMapCloseChildren = 'T'
 	let g:NERDTreeMapToggleHidden = '.'
+	let g:NERDTreeMapJumpNextSibling = '<Nop>'
+	let g:NERDTreeMapJumpPrevSibling = '<Nop>'
 
-	nnoremap <silent> <LocalLeader>e :<C-u>let NERDTreeWinPos=0 \| NERDTreeToggle<CR>
-	nnoremap <silent> <LocalLeader>a :<C-u>let NERDTreeWinPos=0 \| NERDTreeFind<CR>
-	nnoremap <silent> <LocalLeader>E :<C-u>let NERDTreeWinPos=1 \| NERDTreeToggle<CR>
-	nnoremap <silent> <LocalLeader>A :<C-u>let NERDTreeWinPos=1 \| NERDTreeFind<CR>
+	nnoremap <silent> <LocalLeader>E :<C-u>let NERDTreeWinPos=1<CR> :<C-u>NERDTreeToggle<CR>
+	nnoremap <silent> <LocalLeader>e :<C-u>let NERDTreeWinPos=0<CR> :<C-u>NERDTreeToggle<CR>
+	nnoremap <silent> <LocalLeader>A :<C-u>let NERDTreeWinPos=1<CR> :<C-u>NERDTreeTabsToggle<CR>
+	nnoremap <silent> <LocalLeader>a :<C-u>let NERDTreeWinPos=0<CR> :<C-u>NERDTreeTabsToggle<CR>
+
+endif
+
+if dein#tap('nerdtree-tabs')
+	let g:nerdtree_tabs_synchronize_view = 0
 endif
 
 if dein#tap('neosnippet.vim')
@@ -377,5 +384,11 @@ if dein#tap('vim-textobj-function')
 	xmap <silent> af <Plug>(textobj-function-a)
 	xmap <silent> if <Plug>(textobj-function-i)
 endif
+
+if dein#tap('ale')
+	highlight ALEErrorSign ctermbg=NONE ctermfg=red
+	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+endif
+
 
 " vim: set ts=2 sw=2 tw=80 noet :

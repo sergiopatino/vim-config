@@ -95,8 +95,8 @@ xnoremap > >gv|
 " Use tab for indenting
 vnoremap <Tab> >gv|
 vnoremap <S-Tab> <gv
-nmap >>  >>_
-nmap <<  <<_
+nmap <Tab>   >>_
+nmap <S-Tab> <<_
 
 " Select last paste
 nnoremap <expr> gp '`['.strpart(getregtype(), 0, 1).'`]'
@@ -157,17 +157,14 @@ nmap <silent> <Leader>th :nohlsearch<CR>
 nmap <silent> <Leader>tw :setlocal wrap! breakindent!<CR>
 
 " Tabs
-nnoremap <silent> g0 :<C-u>tabfirst<CR>
-nnoremap <silent> g$ :<C-u>tablast<CR>
-nnoremap <silent> gr :<C-u>tabprevious<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
+nnoremap <silent> f0 :<C-u>tabfirst<CR>
+nnoremap <silent> f$ :<C-u>tablast<CR>
+nnoremap <silent> fr :<C-u>tabprevious<CR>
+nnoremap <silent> fl :<C-U>tabnext<CR>
+nnoremap <silent> fh :<C-U>tabprevious<CR>
 " Uses g:lasttab set on TabLeave in MyAutoCmd
 let g:lasttab = 1
 nmap <silent> \\ :execute 'tabn '.g:lasttab<CR>
-
 
 " }}}
 " Totally Custom {{{
@@ -259,10 +256,10 @@ if has('mac')
 	" Open the macOS dictionary on current word
 	nmap <Leader>? :!open dict://<cword><CR><CR>
 
-	" Use Marked for real-time Markdown preview
-	if executable('/Applications/Marked 2.app/Contents/MacOS/Marked 2')
+	" Use MacDown for real-time Markdown preview
+	if executable('/usr/local/bin/macdown')
 		autocmd MyAutoCmd FileType markdown
-			\ nmap <buffer><Leader>P :silent !open -a Marked\ 2.app '%:p'<CR>
+			\ nmap <buffer><Leader>P :silent !open -a macdown '%:p'<CR>
 	endif
 
 	" Use Dash on Mac, for context help
@@ -305,6 +302,10 @@ nnoremap <silent> [Window]o  :<C-u>only<CR>
 nnoremap <silent> [Window]b  :b#<CR>
 nnoremap <silent> [Window]c  :close<CR>
 nnoremap <silent> [Window]x  :<C-u>call <SID>BufferEmpty()<CR>
+
+" Move tabs left or right
+nnoremap <silent> <Leader>] :<C-u>tabm +1<CR>
+nnoremap <silent> <Leader>[ :<C-u>tabm -1<CR>
 
 " Split current buffer, go to previous window and previous buffer
 nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
