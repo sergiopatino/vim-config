@@ -1,8 +1,11 @@
-# Rafael Bodill's Neo/vim Config
+# Sergio's Vim Config
 
 Lean mean Neo/vim machine, 30-45ms startup time.
 
 Best with Neovim or Vim 8 with +python3 extensions enabled.
+
+Based on Rafi Bodill's [vim-config](https://github.com/rafi/vim-config)
+
 
 ## Features
 
@@ -757,8 +760,7 @@ Key   | Mode | Action
 
 ## Credits & Contribution
 
-Big thanks to the dark knight [Shougo].
-
+[Rafi]: https://github.com/rafi/vim-config
 [Shougo]: https://github.com/Shougo
 [lazy-loaded]: ./config/plugins.yaml#L28
 [yaml2json]: https://github.com/bronze1man/yaml2json
