@@ -1,6 +1,7 @@
 ---
 # PLUGINS
 # ==========================================
+
 # Startup
 # -------
 - repo: mhinz/vim-startify
@@ -20,28 +21,14 @@
     autocmd MyAutoCmd InsertEnter * let b:cursorword=0
     autocmd MyAutoCmd InsertLeave * let b:cursorword=1
 
-#
-# Status Line
-# -----------
-- repo: vim-airline/vim-airline
-  hook_source: |
-    let g:airline_powerline_fonts = 1
-    let g:airline_skip_empty_sections = 1
-    let g:airline#extensions#ale#enabled = 0
-    let g:airline#extensions#vimagit#enabled = 1
-
-- repo: vim-airline/vim-airline-themes
-  hook_source: |
-    let g:airline_theme = 'tomorrow'
+# Vim8 only:
+- { repo: roxma/nvim-yarp, if: ! has('nvim') }
+- { repo: roxma/vim-hug-neovim-rpc, if: ! has('nvim'), depends: nvim-yarp }
 
 # ==========================================
 # Coding Productivity
 # ------------
 - repo: wakatime/vim-wakatime
-
-# Vim8 only:
-- { repo: roxma/nvim-yarp, if: ! has('nvim') }
-- { repo: roxma/vim-hug-neovim-rpc, if: ! has('nvim'), depends: nvim-yarp }
 
 # Lazy Loading
 # ==========================================
@@ -94,8 +81,6 @@
     let g:gfm_syntax_highlight_emoji = 0
     let g:gfm_syntax_enable_filetypes = ['markdown']
 
-- { repo: sergiopatino/vim-macdown, on_ft: markdown }
-
 - repo: pangloss/vim-javascript
   on_ft: [ javascript, jsx, javascript.jsx ]
   hook_source: |
@@ -129,20 +114,23 @@
     let g:go_highlight_chan_whitespace_error = 0
     let g:go_highlight_space_tab_error = 0
     let g:go_highlight_trailing_whitespace_error = 0
+    let g:go_highlight_extra_types = 1
     let g:go_highlight_build_constraints = 1
     let g:go_highlight_extra_types = 1
-    let g:go_highlight_fields = 0
+    let g:go_highlight_fields = 1
     let g:go_highlight_format_strings = 1
     let g:go_highlight_functions = 1
+    let g:go_highlight_function_calls = 1
+    let g:go_highlight_function_parameters = 1
+    let g:go_highlight_types = 1
     let g:go_highlight_generate_tags = 1
     let g:go_highlight_operators = 1
     let g:go_highlight_string_spellcheck = 0
+    let g:go_highlight_variable_declarations = 0
+    let g:go_highlight_variable_assignments = 0
 
-- repo: elixir-lang/vim-elixir
-  on_ft: elixir
-
-- repo: slashmili/alchemist.vim
-  on_ft: elixir
+- { repo: elixir-lang/vim-elixir, on_ft: elixir }
+- { repo: slashmili/alchemist.vim, on_ft: elixir }
 
 - { repo: vim-python/python-syntax, on_ft: python }
 - { repo: Vimjas/vim-python-pep8-indent, on_ft: python }
@@ -156,6 +144,7 @@
 - { repo: tbastos/vim-lua, on_ft: lua }
 - { repo: osyo-manga/vim-monster, on_ft: ruby }
 - { repo: toyamarinyon/vim-swift, on_ft: swift }
+- { repo: rust-lang/rust.vim, on_ft: rust }
 - { repo: vim-jp/syntax-vim-ex, on_ft: vim }
 
 - { repo: chrisbra/csv.vim, on_ft: csv }
@@ -177,7 +166,6 @@
 - { repo: exu/pgsql.vim, on_ft: pgsql }
 - { repo: othree/nginx-contrib-vim, on_ft: nginx }
 - { repo: IN3D/vim-raml, on_ft: raml }
-- { repo: hashivim/vim-terraform, on_ft: terraform }
 
 # ==========================================
 # Commands
@@ -202,7 +190,6 @@
 
 - { repo: tiagofumo/vim-nerdtree-syntax-highlight, on_source: nerdtree }
 - { repo: jistr/vim-nerdtree-tabs, on_source: nerdtree }
-- { repo: Xuyuanp/nerdtree-git-plugin, on_source: nerdtree }
 
 - repo: ryanoasis/vim-devicons
   on_source: nerdtree
@@ -212,7 +199,7 @@
     let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
     let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
 
-- { repo: tpope/vim-commentary, on_map: <Plug>Commentary }
+- { repo: Xuyuanp/nerdtree-git-plugin, on_source: nerdtree }
 - { repo: t9md/vim-choosewin, on_map: { n: <Plug> }}
 - { repo: kana/vim-niceblock, on_map: { x: <Plug> }}
 - { repo: guns/xterm-color-table.vim, on_cmd: XtermColorTable }
@@ -326,6 +313,23 @@
   on_path: COMMIT_EDITMSG
   hook_source: let g:committia_min_window_width = 70
 
+#- repo: benekastah/neomake
+#  if: has('nvim')
+#  on_cmd: [ Neomake, NeomakeFile, NeomakeEnable ]
+#  hook_source: source $VIMPATH/config/plugins/neomake.vim
+#  hook_add: |
+#    let g:lint_types = [
+#      \  'yaml.ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
+#      \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
+#      \  'markdown', 'html', 'yaml'
+#      \ ]
+#    autocmd MyAutoCmd BufWritePost *
+#      \  if expand('%:p') !~ $VIMPATH
+#      \      && index(g:lint_types, &filetype) > -1
+#      \      && empty(&buftype)
+#      \|   Neomake
+#      \| endif
+
 - repo: w0rp/ale
   hook_source: |
     let g:ale_linters = { 'python': ['pylint', 'pycodestyle', 'pyflakes', 'flake8'] }
@@ -344,23 +348,6 @@
     let g:ale_python_pyflakes_use_global = 1
     let g:ale_completion_enabled = 1
     let g:ale_lint_on_text_changed = 'never'
-
-# - repo: benekastah/neomake
-#   if: has('nvim')
-#   on_cmd: [ Neomake, NeomakeFile, NeomakeEnable ]
-#   hook_source: source $VIMPATH/config/plugins/neomake.vim
-#   hook_add: |
-#     let g:lint_types = [
-#       \  'yaml.ansible', 'python', 'php', 'ruby', 'vim', 'go', 'sh',
-#       \  'javascript', 'jsx', 'javascript.jsx', 'json', 'css',
-#       \  'markdown', 'html', 'yaml'
-#       \ ]
-#     autocmd MyAutoCmd BufWritePost *
-#       \  if expand('%:p') !~ $VIMPATH
-#       \      && index(g:lint_types, &filetype) > -1
-#       \      && empty(&buftype)
-#       \|   Neomake
-#       \| endif
 
 - repo: lambdalisue/vim-improve-diff
   on_event: [ InsertLeave, BufWinLeave ]
@@ -400,7 +387,6 @@
     \     'syntax': 'markdown',
     \     'ext': '.md' }
     \ ]
-
 
 # ==========================================
 # Completion
@@ -478,16 +464,12 @@
     let g:jedi#quickfix_window_height = 10
     let g:jedi#use_splits_not_buffers = 'right'
 
- #- repo: lambdalisue/vim-pyenv
- #depends: jedi-vim
- #on_ft: python
-
-- repo: zchee/deoplete-go
+- repo: deoplete-plugins/deoplete-go
   build: make
   on_ft: go
   on_event: InsertEnter
 
-- repo: zchee/deoplete-jedi
+- repo: deoplete-plugins/deoplete-jedi
   on_ft: python
   on_event: InsertEnter
   hook_source: autocmd MyAutoCmd FileType python setlocal omnifunc=

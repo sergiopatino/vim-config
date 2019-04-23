@@ -1,4 +1,11 @@
-# vim Config
+# Sergio's Vim Config
+
+Lean mean Neo/vim machine, 30-45ms startup time.
+
+Best with Neovim or Vim 8 with +python3 extensions enabled.
+
+Based on Rafi Bodill's [vim-config](https://github.com/rafi/vim-config)
+
 
 ## Features
 
@@ -27,6 +34,11 @@
   ```
   pip2 install virtualenv
   pip3 install virtualenv
+  ```
+  On Ubuntu you can use:
+  ```
+  apt-get install -y python3-venv
+  pip install virtualenv
   ```
 
 ## Install
@@ -488,8 +500,10 @@ Arrows | Normal | Resize splits (* Enable `g:elite_mode` in `.vault.vim`)
 `}` | Normal | After paragraph motion go to first non-blank char (}^)
 `<` | Visual/Normal | Indent to left and re-select
 `>` | Visual/Normal | Indent to right and re-select
-`Tab` | Visual/Normal | Indent to right and re-select
-`Shift`+`Tab` | Visual/Normal | Indent to left and re-select
+`Tab` | Visual | Indent to right and re-select
+`Shift`+`Tab` | Visual | Indent to left and re-select
+`>`+`>` | Normal | Indent to right and re-select
+`<`+`<` | Normal | Indent to left and re-select
 `gh` | Normal | Show highlight group that matches current cursor
 `gp` | Normal | Select last paste
 `Q` | Normal | Start/stop macro recording
@@ -551,9 +565,11 @@ Key   | Mode | Action
 Key   | Mode | Action
 ----- |:----:| ------------------
 `q` | Normal | Quit window (and Vim, if last window)
-`Ctrl`+`Tab` | Normal | Next tab
-`Ctrl`+`Shift`+`Tab` | Normal | Previous tab
-`\`+`\` | Normal | Jump to last tab
+`f`+`l` | Normal | Next tab
+`f`+`h` | Normal | Previous tab
+`f`+`0` | Normal | First tab
+`f`+`$` | Normal | Last tab
+`\`+`\` | Normal | Jump to last active tab
 `s`+`v` | Normal | Horizontal split (:split)
 `s`+`g` | Normal | Vertical split (:vsplit)
 `s`+`t` | Normal | Open new tab (:tabnew)
@@ -746,9 +762,10 @@ Key   | Mode | Action
 
 ## Credits & Contribution
 
-Forked from [rafi/vim-config]: https://github.com/rafi/vim-config
-Big thanks to the dark knight [Shougo].
+[Rafi](https://github.com/rafi/vim-config)
 
-[Shougo]: https://github.com/Shougo
-[lazy-loaded]: ./config/plugins.yaml#L28
-[yaml2json]: https://github.com/bronze1man/yaml2json
+[Shougo](https://github.com/Shougo)
+
+[lazy-loaded](./config/plugins.yaml#L28)
+
+[yaml2json](https://github.com/bronze1man/yaml2json)
