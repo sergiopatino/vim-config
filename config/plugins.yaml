@@ -194,7 +194,6 @@
 - repo: ryanoasis/vim-devicons
   on_source: nerdtree
   hook_source: |
-    let g:webdevicons_enable_denite = 1
     let g:WebDevIconsUnicodeDecorateFolderNodes = 1
     let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
     let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
