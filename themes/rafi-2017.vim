@@ -16,6 +16,11 @@ set showbreak=↪
 set fillchars=vert:│,fold:─
 set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
 
+" Json quotes {{{
+" ---------------------------------------------------------
+let g:vim_json_syntax_conceal = 0
+" }}}
+
 " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
 " }}}
 
