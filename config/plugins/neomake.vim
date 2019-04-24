@@ -53,9 +53,3 @@ autocmd MyAutoCmd BufWritePre *.js call s:set_javascript_exe()
 call s:set_javascript_exe()
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
-
-" Python
-let g:neomake_python_enabled_makers = ['flake8', 'pylint']
-let g:neomake_python_flake8_maker = {
-  \ 'exe': $HOME . '/.local/bin/flake8'
-  \ }
