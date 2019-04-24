@@ -83,7 +83,7 @@ endif
 
 if dein#tap('nerdtree-tabs')
 	let g:nerdtree_tabs_synchronize_view = 1
-  let g:nerdtree_tabs_synchronize_focus = 1
+	let g:nerdtree_tabs_synchronize_focus = 1
 endif
 
 if dein#tap('neosnippet.vim')
