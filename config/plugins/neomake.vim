@@ -3,6 +3,7 @@
 " ---------
 let g:neomake_open_list = 0
 let g:neomake_verbose = 1
+let g:airline#extensions#neomake#enabled = 0
 
 if ! empty(g:python3_host_prog)
 	let g:neomake_python_python_exe = g:python3_host_prog
@@ -52,3 +53,9 @@ autocmd MyAutoCmd BufWritePre *.js call s:set_javascript_exe()
 call s:set_javascript_exe()
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
+
+" Python
+let g:neomake_python_enabled_makers = ['flake8', 'pylint']
+let g:neomake_python_flake8_maker = {
+  \ 'exe': $HOME . '/.local/bin/flake8'
+  \ }

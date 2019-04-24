@@ -1,4 +1,4 @@
-
+"
 " File-type Detection
 " ------------------------------------------------
 
@@ -30,6 +30,11 @@ augroup filetypedetect
 	autocmd BufNewFile,BufRead Jenkinsfile          setfiletype groovy
 	autocmd BufNewFile,BufRead Tmuxfile,tmux/config setfiletype tmux
 	autocmd BufNewFile,BufRead Brewfile             setfiletype ruby
+
+	autocmd BufNewFile,BufRead *.tf,*.tfvars,*.tfstate setfiletype terraform
+	autocmd BufNewFile,BufRead *.ex, *.exs setfiletype elixir
+
+	autocmd BufNewFile,BufRead requirements*.txt setfiletype requirements
 
 augroup END
 
