@@ -42,7 +42,7 @@ nnoremap <leader>a =ip
 nnoremap <CR> za
 
 " Focus the current fold by closing all others
-nnoremap <S-Return> zMza
+nnoremap <S-Return> zMzvzt
 
 " Use backspace key for matchit.vim
 nmap <BS> %
@@ -205,6 +205,10 @@ noremap  <Leader>j :m+<CR>
 if has('nvim')
 	nmap <silent> <LocalLeader>c :<C-u>ActionMenu<CR>
 endif
+
+" Whitespace jump (see plugin/whitespace.vim)
+nnoremap ]w :<C-u>WhitespaceNext<CR>
+nnoremap [w :<C-u>WhitespacePrev<CR>
 
 " Session management shortcuts (see plugin/sessions.vim)
 nmap <silent> <Leader>se :<C-u>SessionSave<CR>

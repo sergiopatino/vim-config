@@ -11,6 +11,26 @@ if has('gui_running')
 endif
 " }}}
 
+" Terminal colors {{{
+" ---
+let g:terminal_color_0 = '#2a2a2a'
+let g:terminal_color_1 = '#d370a3'
+let g:terminal_color_2 = '#6d9e3f'
+let g:terminal_color_3 = '#b58858'
+let g:terminal_color_4 = '#6095c5'
+let g:terminal_color_5 = '#ac7bde'
+let g:terminal_color_6 = '#3ba275'
+let g:terminal_color_7 = '#ffffff'
+let g:terminal_color_8 = '#686868'
+let g:terminal_color_9 = '#ffa7da'
+let g:terminal_color_10 = '#a3d572'
+let g:terminal_color_11 = '#efbd8b'
+let g:terminal_color_12 = '#98cbfe'
+let g:terminal_color_13 = '#e5b0ff'
+let g:terminal_color_14 = '#75daa9'
+let g:terminal_color_15 = '#cfcfcf'
+" }}}
+
 " Tabline {{{
 " ---
 " TabLineFill: Tab pages line, where there are no labels
@@ -48,15 +68,18 @@ highlight User8 guifg=#ffb964 guibg=#30302c ctermfg=215 ctermbg=236
 " Highlights: General GUI {{{
 " ---
 highlight! link jsFutureKeys PreProc
+highlight! WarningMsg  ctermfg=100 guifg=#CCC566
+" Matchparens
+highlight! MatchParen  ctermfg=NONE guifg=NONE ctermbg=236 guibg=#2d3c42
+highlight! ParenMatch  ctermfg=NONE guifg=NONE ctermbg=236 guibg=#494d2a
+" Cursorword plugin:
+highlight! CursorWord0 ctermfg=NONE guifg=NONE ctermbg=236 guibg=#2b2a22
+
 " highlight! Error  term=NONE cterm=NONE
 " highlight! link WarningMsg  Comment
 " highlight! link pythonSpaceError  NONE
 " highlight! link pythonIndentError NONE
 " highlight! link mkdLineBreak      NONE
-" highlight! WarningMsg ctermfg=100 guifg=#CCC566
-" highlight! ParenMatch  ctermbg=236 guibg=#30302c
-" highlight! CursorWord0 ctermbg=236 guibg=#30302c
-" highlight! CursorWord1 ctermbg=236 guibg=#30302c
 " }}}
 
 " Plugin: Defx icons and highlights {{{
@@ -64,6 +87,8 @@ highlight! link jsFutureKeys PreProc
 highlight Defx_filename_3_Modified  ctermfg=1  guifg=#D370A3
 highlight Defx_filename_3_Staged    ctermfg=10 guifg=#A3D572
 highlight Defx_filename_3_Ignored   ctermfg=8  guifg=#404660
+highlight link Defx_filename_3_root_marker Comment
+
 highlight def link Defx_filename_3_Untracked Comment
 highlight def link Defx_filename_3_Unknown Comment
 highlight def link Defx_filename_3_Renamed Title
@@ -81,11 +106,11 @@ highlight! WarningSyntax ctermfg=58 guifg=#7d7629
 "}}}
 
 " Plugin: vim-gitgutter {{{
-" ---------------------------------------------------------
-highlight! GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=NONE guibg=NONE
-highlight! GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=NONE guibg=NONE
-highlight! GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
-highlight! GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
+" ---
+highlight! GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=234 guibg=#1c1c1c
+highlight! GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=234 guibg=#1c1c1c
+highlight! GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=234 guibg=#1c1c1c
+highlight! GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=234 guibg=#1c1c1c
 " }}}
 
 " Plugin: denite {{{
@@ -104,9 +129,9 @@ highlight! link deniteSource_QuickfixPosition qfLineNr
 highlight! link Flashy DiffText
 " }}}
 
-" Plugin: vim-bookmarks {{{
-highlight! BookmarkSign            ctermfg=12 guifg=#4EA9D7 ctermbg=234 guibg=#1c1c1c
-highlight! BookmarkAnnotationSign  ctermfg=11 guifg=#EACF49 ctermbg=234 guibg=#1c1c1c
+" Plugin: vim-signature {{{
+highlight! SignatureMarkText    ctermfg=11 guifg=#756207 ctermbg=234 guibg=#1c1c1c
+highlight! SignatureMarkerText  ctermfg=12 guifg=#4EA9D7 ctermbg=234 guibg=#1c1c1c
 " }}}
 
 " Plugin: vim-choosewin {{{
