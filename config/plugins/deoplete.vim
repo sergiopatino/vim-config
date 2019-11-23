@@ -1,6 +1,7 @@
 " deoplete
 " ---
 
+" For debugging:
 " call deoplete#custom#option('profile', v:true)
 " call deoplete#enable_logging('DEBUG', 'deoplete.log')<CR>
 " call deoplete#custom#source('tern', 'debug_enabled', 1)<CR>
@@ -8,15 +9,16 @@
 " General settings " {{{
 " ---
 call deoplete#custom#option({
-	\ 'auto_refresh_delay': 10,
-	\ 'camel_case': v:true,
-	\ 'skip_multibyte': v:true,
-	\ 'prev_completion_mode': 'none',
-	\ 'min_pattern_length': 1,
 	\ 'max_list': 10000,
+	\ 'min_pattern_length': 1,
+	\ 'auto_preview': v:true,
+	\ 'smart_case': v:true,
+	\ 'skip_multibyte': v:true,
 	\ 'skip_chars': ['(', ')', '<', '>'],
 	\ })
-	"\ 'prev_completion_mode': 'filter',
+	"\ 'auto_refresh_delay': 10,
+	"\ 'auto_complete_delay': 200,
+	"\ 'prev_completion_mode': 'length',
 
 " Deoplete Jedi (python) settings
 let g:deoplete#sources#jedi#statement_length = 30
@@ -27,7 +29,7 @@ let g:deoplete#sources#jedi#short_types = 1
 let g:deoplete#sources#ternjs#filetypes = [
 	\ 'jsx',
 	\ 'javascript',
-	\ 'javascript.jsx',
+	\ 'javascriptreact',
 	\ 'vue',
 	\ ]
 
@@ -38,18 +40,12 @@ let g:deoplete#sources#ternjs#docs = 1
 " }}}
 " Limit Sources " {{{
 " ---
+let g:deoplete#sources = get(g:, 'deoplete#sources', {})
+let g:deoplete#sources['denite-filter'] = ['denite']
 
 " }}}
 " Omni functions and patterns " {{{
 " ---
-if ! exists('g:context_filetype#same_filetypes')
-	let g:context_filetype#filetypes = {}
-endif
-
-let g:context_filetype#filetypes.svelte = [
-	\   { 'filetype': 'css', 'start': '<style>', 'end': '</style>' },
-	\ ]
-
 call deoplete#custom#var('omni', 'functions', {
 	\   'css': [ 'csscomplete#CompleteCSS' ]
 	\ })
@@ -104,15 +100,13 @@ call deoplete#custom#source('syntax',        'rank', 50)
 call deoplete#custom#source('_', 'matchers',
 	\ [ 'matcher_fuzzy', 'matcher_length' ])
 
-call deoplete#custom#source('denite', 'matchers',
-	\ ['matcher_full_fuzzy', 'matcher_length'])
-
-call deoplete#custom#source('_', 'converters', [
-	\   'converter_remove_overlap',
-	\   'matcher_length',
-	\   'converter_truncate_abbr',
-	\   'converter_truncate_menu',
-	\ ])
+" call deoplete#custom#source('_', 'converters', [
+"	\   'converter_remove_overlap',
+"	\   'matcher_length',
+"	\   'converter_truncate_abbr',
+"	\   'converter_truncate_info',
+"	\   'converter_truncate_menu',
+"	\ ])
 
 call deoplete#custom#source('denite', 'matchers',
 	\ ['matcher_full_fuzzy', 'matcher_length'])
@@ -125,7 +119,7 @@ augroup user_plugin_deoplete
 	autocmd CompleteDone * silent! pclose!
 augroup END
 
-" Close popup first, if Escape is pressed
+" Close popup first, if Escape is pressed, and don't leave insert mode
 " imap <expr><Esc> pumvisible() ? deoplete#close_popup() : "\<Esc>"
 
 " Movement within 'ins-completion-menu'
@@ -147,7 +141,8 @@ inoremap <silent><expr><C-l> deoplete#complete_common_string()
 " <CR>: If popup menu visible, close popup with selection.
 "       Otherwise, check if within empty pair and use delimitMate.
 inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup()
-	\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
+	\ : (get(b:, 'delimitMate_enabled') && delimitMate#WithinEmptyPair() ?
+	\   "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
 " <Tab> completion:
 " 1. If popup menu is visible, select and insert next item
@@ -155,14 +150,14 @@ inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup()
 " 3. Otherwise, if preceding chars are whitespace, insert tab char
 " 4. Otherwise, start manual autocomplete
 imap <silent><expr><Tab>
-	\ neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	\ pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
 	\ : (<SID>is_whitespace() ? "\<Tab>"
-	\ : (pumvisible() ? "\<Down>"
 	\ : deoplete#manual_complete()))
 
 smap <silent><expr><Tab>
-	\ neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-	\ : (pumvisible() ? "\<Down>"
+	\ pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
 	\ : (<SID>is_whitespace() ? "\<Tab>"
 	\ : deoplete#manual_complete()))
 
