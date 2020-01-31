@@ -1,13 +1,10 @@
-# Rafael Bodill's Neo/vim Config
+# Neo/vim Config
 
 Lean mean Neo/vim machine, 30-45ms startup time.
 
 Best with Neovim or Vim8 with +python3 extension enabled.
 
-I encourage you to fork this repo and create your own experience. Learn how to
-tweak and change Neo/vim to the way _you_ like it. This is my cultivation of
-years of tweaking, use it as a git remote and stay in-touch with upstream for
-reference or cherry-picking.
+Based on Rafi Bodill's [vim-config](https://github.com/rafi/vim-config)
 
 <details>
   <summary>
@@ -629,9 +626,6 @@ Note that,
 | `<leader>`+`tl` | Normal | Toggle hidden characters (:setlocal nolist!)
 | `<leader>`+`th` | Normal | Toggle highlighted search (:set hlsearch!)
 | `<leader>`+`tw` | Normal | Toggle wrap (:setlocal wrap! breakindent!)
-| `g1` | Normal | Go to first tab (:tabfirst)
-| `g9` | Normal | Go to last tab (:tablast)
-| `g5` | Normal | Go to previous tab (:tabprevious)
 | `Ctrl`+`j` | Normal | Move to split below
 | `Ctrl`+`k` | Normal | Move to upper split
 | `Ctrl`+`h` | Normal | Move to left split
@@ -649,8 +643,14 @@ Note that,
 | Key   | Mode | Action
 | ----- |:----:| ------------------
 | `q` | Normal | Quit window (and Vim, if last window)
-| `Ctrl`+`Tab` | Normal | Next tab
-| `Ctrl`+`Shift`+`Tab` | Normal | Previous tab
+| `f1` | Normal | Go to first tab (:tabfirst)
+| `f9` | Normal | Go to last tab (:tablast)
+| `f`+`l` | Normal | Next tab
+| `f`+`h` | Normal | Previous tab
+| `f`+`L` | Normal | Last active tab
+| `f`+`L` | Normal | Last active tab
+| `f`+`[` | Normal | Move tab left
+| `f`+`]` | Normal | Move tab right
 | `s`+`v` | Normal | Horizontal split (:split)
 | `s`+`g` | Normal | Vertical split (:vsplit)
 | `s`+`t` | Normal | Open new tab (:tabnew)
@@ -716,25 +716,31 @@ Note that,
 | **Within _Defx_ window** ||
 | `h` | Normal | Collapse directory tree
 | `j` / `k` | Normal | Move up and down the tree
-| `<Return>` / `l` | Normal | Toggle collapse/expand directory or open file
+|  `l` | Normal | Toggle collapse/expand directory or open file
+|  `L` | Normal | Open file, quit defx
 | `<Space>` | Normal | Select current file or directory
 | `*` | Normal | Invert selection (select all)
+| `<Return>` | Normal | Move into the selected directory
 | `<Backspace>` | Normal | Move into the parent directory
-| `&` / `\` | Normal | Move to project root
+| `\` | Normal | Move to project root
 | `~` | Normal | Move to user home directory
 | `st` | Normal | Open file in new tab
 | `sv` | Normal | Open file in a horizontal split
+| `Sv` | Normal | Open file in a horizontal split, quit defx
 | `sg` | Normal | Open file in a vertical split
+| `Sg` | Normal | Open file in a vertical split, quit defx
 | `N` | Normal | Create new directories and/or files
 | `K` | Normal | Create new directory
 | `c`/`m`/`p` | Normal | Copy, move, and paste
 | `r` | Normal | Rename file or directory
 | `dd` | Normal | Delete selected files and directories
 | `y` | Normal | Yank selected item to clipboard
+| `R` | Normal | Redraw window
 | `w` | Normal | Toggle window size
 | `]`+`g` | Normal | Next dirty git item
 | `[`+`g` | Normal | Previous dirty git item
 | `x` / `gx` | Normal | Execute associated system application
+| `.`  | Normal | Toggle hidden filed
 | `gd` | Normal | Open git diff on selected file
 | `gl` | Normal | Open terminal file explorer
 | `gr` | Normal | Grep in selected directory
