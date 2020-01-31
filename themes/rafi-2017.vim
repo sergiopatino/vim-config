@@ -16,11 +16,6 @@ set showbreak=↪
 set fillchars=vert:│,fold:─
 set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
 
-" Json quotes {{{
-" ---------------------------------------------------------
-let g:vim_json_syntax_conceal = 0
-" }}}
-
 " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
 " }}}
 
@@ -31,9 +26,9 @@ hi TabLineFill ctermfg=234 ctermbg=236 guifg=#1C1C1C guibg=#303030 cterm=NONE gu
 " TabLine: Not-active tab page label
 hi TabLine     ctermfg=243 ctermbg=236 guifg=#767676 guibg=#303030 cterm=NONE gui=NONE
 " TabLineSel: Active tab page label
-hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#1a1a1a guibg=#88A1BB cterm=NONE gui=NONE
+hi TabLineSel  ctermfg=241 ctermbg=234 guifg=#626262 guibg=#1C1C1C cterm=NONE gui=NONE
 " Custom
-highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#88A1BB9 guibg=#1C1C1C
+highlight TabLineSelShade  ctermfg=235 ctermbg=234 guifg=#262626 guibg=#1C1C1C
 highlight TabLineAlt       ctermfg=252 ctermbg=238 guifg=#D0D0D0 guibg=#444444
 highlight TabLineAltShade  ctermfg=238 ctermbg=236 guifg=#444444 guibg=#303030
 
@@ -49,7 +44,7 @@ function! Tabline() abort "{{{
 		if i + 1 == nr
 			" Active tab
 			let s:tabline .=
-				\ '%#TabLineSelShade#░%#TabLineSel# '.
+				\ '%#TabLineSelShade#░%#TabLineSel#'.
 				\ '%'.(i+1).'T%{badge#label('.(i+1).', "▛", "N/A")} '.
 				\ '%#TabLineFill#▞ '
 		else
@@ -69,69 +64,69 @@ endfunction "}}}
 let &tabline='%!Tabline()'
 " }}}
 
-"" Statusline {{{
-"let s:stl  = " %7*%{&paste ? '=' : ''}%*"         " Paste symbol
-"let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modifide symbol
-"let s:stl .= "%6*%{badge#mode('⚠ ', 'Z')}"        " Read-only symbol
-"let s:stl .= '%*%n'                               " Buffer number
-"let s:stl .= "%6*%{badge#modified('+')}%0*"       " Write symbol
-"let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
-"let s:stl .= ' %<'                                " Truncate here
-"let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
-"let s:stl .= "%4*%(%{badge#trails('⤐ %s')} %)"  " Whitespace
-"let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
-"let s:stl .= '%='                                 " Align to right
-"let s:stl .= '%{badge#format()} %4*%*'           " File format
-"let s:stl .= '%( %{&fenc} %)'                     " File encoding
-"let s:stl .= '%4*%*%( %{&ft} %)'                 " File type
-"let s:stl .= '%3*%2* %l/%2c%4p%% '               " Line and column
-"let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
-"
-"" Non-active Statusline {{{
-"let s:stl_nc = " %{badge#mode('⚠ ', 'Z')}%n"   " Readonly & buffer
-"let s:stl_nc .= "%6*%{badge#modified('+')}%*"  " Write symbol
-"let s:stl_nc .= ' %{badge#filename()}'         " Relative supername
-"let s:stl_nc .= '%='                           " Align to right
-"let s:stl_nc .= '%{&ft} '                      " File type
-"" }}}
-"
-"" Highlights: Statusline {{{
-"highlight StatusLine   ctermfg=236 ctermbg=248 guifg=#30302c guibg=#a8a897
-"highlight StatusLineNC ctermfg=236 ctermbg=242 guifg=#30302c guibg=#666656
-"
-"" Filepath color
-"highlight User1 guifg=#D7D7BC guibg=#30302c ctermfg=251 ctermbg=236
-"" Line and column information
-"highlight User2 guifg=#a8a897 guibg=#4e4e43 ctermfg=248 ctermbg=239
-"" Line and column corner arrow
-"highlight User3 guifg=#4e4e43 guibg=#30302c ctermfg=239 ctermbg=236
-"" Buffer # symbol and whitespace or syntax errors
-"highlight User4 guifg=#666656 guibg=#30302c ctermfg=242 ctermbg=236
-"" Write symbol
-"highlight User6 guifg=#cf6a4c guibg=#30302c ctermfg=167 ctermbg=236
-"" Paste symbol
-"highlight User7 guifg=#99ad6a guibg=#30302c ctermfg=107 ctermbg=236
-"" Syntax and whitespace
-"highlight User8 guifg=#ffb964 guibg=#30302c ctermfg=215 ctermbg=236
-"" }}}
-"
-"let s:disable_statusline =
-"	\ 'denite\|defx\|tagbar\|nerdtree\|undotree\|diff\|peekaboo\|sidemenu'
-"
-"" Toggle Statusline {{{
-"augroup statusline
-"	autocmd!
-"	autocmd FileType,WinEnter,BufWinEnter,BufReadPost *
-"		\ if &filetype !~? s:disable_statusline
-"		\ | let &l:statusline = s:stl
-"		\ | endif
-"	autocmd WinLeave *
-"		\ if &filetype !~? s:disable_statusline
-"		\ | let &l:statusline = s:stl_nc
-"		\ | endif
-"augroup END "}}}
-"
-"" }}}
+" Statusline {{{
+let s:stl  = " %7*%{&paste ? '=' : ''}%*"         " Paste symbol
+let s:stl .= "%4*%{&readonly ? '' : '#'}%*"       " Modifide symbol
+let s:stl .= "%6*%{badge#mode('⚠ ', 'Z')}"        " Read-only symbol
+let s:stl .= '%*%n'                               " Buffer number
+let s:stl .= "%6*%{badge#modified('+')}%0*"       " Write symbol
+let s:stl .= ' %1*%{badge#filename()}%*'          " Filename
+let s:stl .= ' %<'                                " Truncate here
+let s:stl .= '%( %{badge#branch()} %)'           " Git branch name
+let s:stl .= "%4*%(%{badge#trails('⤐ %s')} %)"   " Whitespace
+let s:stl .= '%(%{badge#syntax()} %)%*'           " syntax check
+let s:stl .= '%='                                 " Align to right
+let s:stl .= '%{badge#format()} %4*%*'           " File format
+let s:stl .= '%( %{&fenc} %)'                     " File encoding
+let s:stl .= '%4*%*%( %{&ft} %)'                 " File type
+let s:stl .= '%3*%2* %l/%2c%4p%% '               " Line and column
+let s:stl .= '%{badge#indexing()}%*'              " Indexing tags indicator
+
+" Non-active Statusline {{{
+let s:stl_nc = " %{badge#mode('⚠ ', 'Z')}%n"   " Readonly & buffer
+let s:stl_nc .= "%6*%{badge#modified('+')}%*"  " Write symbol
+let s:stl_nc .= ' %{badge#filename()}'         " Relative supername
+let s:stl_nc .= '%='                           " Align to right
+let s:stl_nc .= '%{&ft} '                      " File type
+" }}}
+
+" Highlights: Statusline {{{
+highlight StatusLine   ctermfg=236 ctermbg=248 guifg=#30302c guibg=#a8a897
+highlight StatusLineNC ctermfg=236 ctermbg=242 guifg=#30302c guibg=#666656
+
+" Filepath color
+highlight User1 guifg=#D7D7BC guibg=#30302c ctermfg=251 ctermbg=236
+" Line and column information
+highlight User2 guifg=#a8a897 guibg=#4e4e43 ctermfg=248 ctermbg=239
+" Line and column corner arrow
+highlight User3 guifg=#4e4e43 guibg=#30302c ctermfg=239 ctermbg=236
+" Buffer # symbol and whitespace or syntax errors
+highlight User4 guifg=#666656 guibg=#30302c ctermfg=242 ctermbg=236
+" Write symbol
+highlight User6 guifg=#cf6a4c guibg=#30302c ctermfg=167 ctermbg=236
+" Paste symbol
+highlight User7 guifg=#99ad6a guibg=#30302c ctermfg=107 ctermbg=236
+" Syntax and whitespace
+highlight User8 guifg=#ffb964 guibg=#30302c ctermfg=215 ctermbg=236
+" }}}
+
+let s:disable_statusline =
+	\ 'denite\|defx\|tagbar\|nerdtree\|undotree\|diff\|peekaboo\|sidemenu'
+
+" Toggle Statusline {{{
+augroup statusline
+	autocmd!
+	autocmd FileType,WinEnter,BufWinEnter,BufReadPost *
+		\ if &filetype !~? s:disable_statusline
+		\ | let &l:statusline = s:stl
+		\ | endif
+	autocmd WinLeave *
+		\ if &filetype !~? s:disable_statusline
+		\ | let &l:statusline = s:stl_nc
+		\ | endif
+augroup END "}}}
+
+" }}}
 
 " Highlights: General GUI {{{
 " ---------------------------------------------------------
@@ -144,28 +139,31 @@ highlight! link ExtraWhitespace  SpellBad
 highlight! WarningMsg ctermfg=100 guifg=#CCC566
 " }}}
 
+highlight ParenMatch  ctermbg=236 guibg=#30302c
+highlight CursorWord0 ctermbg=236 guibg=#30302c
+highlight CursorWord1 ctermbg=236 guibg=#30302c
 
 " Plugin: Defx icons and highlights {{{
 " ---------------------------------------------------------
 let g:defx_git#indicators = {
-	\ 'Modified'  : 'M',
-	\ 'Staged'    : 'm',
-	\ 'Untracked' : '?',
+	\ 'Modified'  : '•',
+	\ 'Staged'    : '✚',
+	\ 'Untracked' : 'ᵁ',
 	\ 'Renamed'   : '≫',
-	\ 'Unmerged'  : 'u',
-	\ 'Ignored'   : 'i',
+	\ 'Unmerged'  : '≠',
+	\ 'Ignored'   : 'ⁱ',
 	\ 'Deleted'   : '✖',
 	\ 'Unknown'   : '⁇'
 	\ }
 
-hi Defx_git_Untracked ctermfg=12 guifg=#81a2be
-hi Defx_git_Ignored   ctermfg=8  guifg=#404660
-hi Defx_git_Unknown   ctermfg=3  guifg=#f0c674
-hi Defx_git_Renamed   ctermfg=3  guifg=#de935f
-hi Defx_git_Modified  ctermfg=9  guifg=#cc6666
-hi Defx_git_Unmerged  ctermfg=14 guifg=#8abeb7
-hi Defx_git_Deleted   ctermfg=13 guifg=#b294bb
-hi Defx_git_Staged    ctermfg=10 guifg=#b5bd68
+highlight Defx_filename_3_Modified  ctermfg=1  guifg=#D370A3
+highlight Defx_filename_3_Staged    ctermfg=10 guifg=#A3D572
+highlight Defx_filename_3_Ignored   ctermfg=8  guifg=#404660
+highlight def link Defx_filename_3_Untracked Comment
+highlight def link Defx_filename_3_Unknown Comment
+highlight def link Defx_filename_3_Renamed Title
+highlight def link Defx_filename_3_Unmerged Label
+" highlight Defx_git_Deleted   ctermfg=13 guifg=#b294bb
 
 " Plugin: NERDTree icons and highlights {{{
 " ---------------------------------------------------------
@@ -183,7 +181,6 @@ let g:NERDTreeIndicatorMapCustom = {
 
 let g:NERDTreeDirArrowExpandable = '▷'
 let g:NERDTreeDirArrowCollapsible = '▼'
-let g:NERDTreeStatusline = ' NERDTree'
 
 highlight! NERDTreeOpenable ctermfg=132 guifg=#B05E87
 highlight! def link NERDTreeClosable NERDTreeOpenable
@@ -203,10 +200,6 @@ highlight! def link NERDTreeGitStatusUnmerged Label
 highlight! def link NERDTreeGitStatusDirDirty Constant
 highlight! def link NERDTreeGitStatusDirClean DiffAdd
 highlight! def link NERDTreeGitStatusUnknown Comment
-
-" Fix for folder icon color
-" https://github.com/ryanoasis/vim-devicons/issues/250
-highlight! link NERDTreeFlags NERDTreeDir
 
 function! s:NERDTreeHighlight()
 	for l:name in keys(g:NERDTreeIndicatorMapCustom)
