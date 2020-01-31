@@ -13,9 +13,9 @@ function! Tabline()
 		if l:nr == l:current
 			" Active tab
 			let s:tabline .=
-				\ '%#TabLineFill#%#TabLineSel# ' .
+				\ '%#TabLineSelShade#░%#TabLineSel# '.
 				\ '%' . l:nr . 'T%{badge#filename(0, ' . l:nr . ', 1, 1)} ' .
-				\ '%#TabLineFill#'
+				\ '%#TabLineFill#▞'
 		else
 			" Normal tab
 			let s:tabline .=
