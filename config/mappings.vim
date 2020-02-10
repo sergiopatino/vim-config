@@ -39,6 +39,10 @@ nnoremap <leader>cp yap<S-}>p
 " xnoremap p  "0p
 " nnoremap x "_x
 
+"" delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d Delete will not post to register
+
 " Toggle fold
 nnoremap <CR> za
 
@@ -268,10 +272,17 @@ nnoremap <silent> [Window]x  :<C-u>call <SID>window_empty_buffer()<CR>
 nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
 nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
 
+" New split with empty buffer
+nnoremap <silent> sV :new<CR>
+nnoremap <silent> sG :vnew<CR>
+
 " Background dark/light toggle and contrasts
 nmap <silent> [Window]h :<C-u>call <SID>toggle_background()<CR>
 nmap <silent> [Window]- :<c-u>call <SID>toggle_contrast(-v:count1)<cr>
 nmap <silent> [Window]= :<c-u>call <SID>toggle_contrast(+v:count1)<cr>
+
+" Exit terminal mode in Deol
+tnoremap <ESC>   <C-\><C-n>
 
 function! s:toggle_background()
 	if ! exists('g:colors_name')

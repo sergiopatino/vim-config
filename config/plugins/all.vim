@@ -1,7 +1,6 @@
 
 " Plugin Settings
 "---------------------------------------------------------
-
 if dein#tap('denite.nvim')
 	nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
 	nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
@@ -236,7 +235,7 @@ endif
 
 if dein#tap('vim-go')
 	autocmd user_events FileType go
-		\   nmap <C-]> <Plug>(go-def)
+		\   nmap <C-]> <Plug>(go-def-tab)
 		\ | nmap <Leader>god  <Plug>(go-describe)
 		\ | nmap <Leader>goc  <Plug>(go-callees)
 		\ | nmap <Leader>goC  <Plug>(go-callers)

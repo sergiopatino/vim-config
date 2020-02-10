@@ -4,7 +4,7 @@
 function! Tabline()
 	" Active project name
 	let s:tabline =
-		\ '%#TabLineAlt# %{"  " . badge#project()} %#TabLineAltShade#'
+		\ '%#TabLineAlt# %{"  " . badge#project()} %#TabLineAltShade#'
 
 	" Iterate through all tabs and collect labels
 	let l:current = tabpagenr()
@@ -15,7 +15,7 @@ function! Tabline()
 			let s:tabline .=
 				\ '%#TabLineSelShade#░%#TabLineSel# '.
 				\ '%' . l:nr . 'T%{badge#filename(0, ' . l:nr . ', 1, 1)} ' .
-				\ '%#TabLineFill#▞'
+				\ '%#TabLineFill#'
 		else
 			" Normal tab
 			let s:tabline .=
