@@ -20,7 +20,7 @@ if hash pyenv 2>/dev/null && [ -d "$(pyenv root)/versions/neovim2" ] && [ -d "$(
 	[ -d "$venv/neovim3" ] || ln -s "$(pyenv root)/versions/neovim3" "$venv/neovim3"
 else
 	[ -d "$venv/neovim2" ] || python2 -m virtualenv "$venv/neovim2"
-	[ -d "$venv/neovim3" ] || python3 -m venv "$venv/neovim3"
+	[ -d "$venv/neovim3" ] || python3 -m virtualenv "$venv/neovim3"
 fi
 
 # Install or upgrade dependencies
