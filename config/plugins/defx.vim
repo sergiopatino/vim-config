@@ -57,31 +57,30 @@ augroup user_plugin_defx
 	" Define defx window mappings
 	autocmd FileType defx call <SID>defx_mappings()
 
+	" autocmd WinEnter * if &filetype ==# 'defx'
+	"	\ |   silent! highlight! link CursorLine TabLineSel
+	"	\ | endif
+	"
+	" autocmd WinLeave * if &filetype ==# 'defx'
+	"	\ |   silent! highlight! link CursorLine NONE
+	"	\ | endif
+
 augroup END
 
 " Internal functions
 " ---
 
-" Deprecated after disabling defx's (buf)listed
-" function! s:defx_close_tab(tabnr)
-" 	" When a tab is closed, find and delete any associated defx buffers
-" 	for l:nr in tabpagebuflist()
-" 		if getbufvar(l:nr, '&filetype') ==# 'defx'
-" 			silent! execute 'bdelete '.l:nr
-" 			break
-" 		endif
-" 	endfor
-" endfunction
-
-function! s:defx_toggle_tree() abort
-	" Open current file, or toggle directory expand/collapse
-	if defx#is_directory()
-		return defx#do_action('open_or_close_tree')
-	endif
-	return defx#do_action('drop')
+function! s:defx_close_tab(tabnr)
+	" When a tab is closed, find and delete any associated defx buffers
+	for l:nr in tabpagebuflist()
+		if getbufvar(l:nr, '&filetype') ==# 'defx'
+			silent! execute 'bdelete '.l:nr
+			break
+		endif
+	endfor
 endfunction
 
-function! s:defx_toggle_tree_quit() abort
+function! s:defx_toggle_tree() abort
 	" Open current file, or toggle directory expand/collapse
 	if defx#is_directory()
 		return defx#do_action('open_or_close_tree')
@@ -132,15 +131,14 @@ function! s:defx_mappings() abort
 	" Defx window keyboard mappings
 	setlocal signcolumn=no expandtab
 
+	nnoremap <silent><buffer><expr> <CR>  <SID>defx_toggle_tree()
+	nnoremap <silent><buffer><expr> e     <SID>defx_toggle_tree()
 	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
-	nnoremap <silent><buffer><expr> L     <SID>defx_toggle_tree_quit()
 	nnoremap <silent><buffer><expr> h     defx#do_action('close_tree')
 	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree_recursive')
 	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit']])
-	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split']])
-	nnoremap <silent><buffer><expr> sG    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
-	nnoremap <silent><buffer><expr> sV    defx#do_action('multi', [['drop', 'split'], 'quit'])
+	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split'], 'quit'])
 	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
 	nnoremap <silent><buffer><expr> y     defx#do_action('yank_path')
 	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
@@ -150,7 +148,7 @@ function! s:defx_mappings() abort
 	" Defx's buffer management
 	nnoremap <silent><buffer><expr> q      defx#do_action('quit')
 	nnoremap <silent><buffer><expr> se     defx#do_action('save_session')
-	nnoremap <silent><buffer><expr> R      defx#do_action('redraw')
+	nnoremap <silent><buffer><expr> R  defx#do_action('redraw')
 	nnoremap <silent><buffer><expr> <C-g>  defx#do_action('print')
 
 	" File/dir management
@@ -168,9 +166,10 @@ function! s:defx_mappings() abort
 
 	" Change directory
 	nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
+	nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
 	nnoremap <silent><buffer><expr> <BS>  defx#async_action('cd', ['..'])
-	nnoremap <silent><buffer><expr> <CR>  defx#async_action('open_directory')
 	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
+	nnoremap <silent><buffer><expr> <CR>  defx#async_action('open_directory')
 	nnoremap <silent><buffer><expr> u   defx#do_action('cd', ['..'])
 	nnoremap <silent><buffer><expr> 2u  defx#do_action('cd', ['../..'])
 	nnoremap <silent><buffer><expr> 3u  defx#do_action('cd', ['../../..'])
