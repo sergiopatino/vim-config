@@ -9,11 +9,20 @@ augroup user_plugin_filetype " {{{
 		\ source $MYVIMRC | redraw
 
 	" Highlight current line only on focused window
-	autocmd WinEnter,InsertLeave * if &ft !~# 'denite' | set cursorline | endif
-	autocmd WinLeave,InsertEnter * if &ft !~# 'denite' | set nocursorline | endif
+	autocmd WinEnter,BufEnter,InsertLeave *
+		\ if ! &cursorline && &filetype !~# '^\(denite\|clap_\)' && ! &pvw
+		\ | setlocal cursorline
+		\ | endif
+	autocmd WinLeave,BufLeave,InsertEnter *
+		\ if &cursorline && &filetype !~# '^\(denite\|clap_\)' && ! &pvw
+		\ | setlocal nocursorline
+		\ | endif
 
 	" Automatically set read-only for files being edited elsewhere
 	autocmd SwapExists * nested let v:swapchoice = 'o'
+
+	" Update diff comparison once leaving insert mode
+	autocmd InsertLeave * if &l:diff | diffupdate | endif
 
 	" Equalize window dimensions when resizing vim window
 	autocmd VimResized * tabdo wincmd =
@@ -25,6 +34,14 @@ augroup user_plugin_filetype " {{{
 	autocmd FocusGained * checktime
 
 	autocmd Syntax * if line('$') > 5000 | syntax sync minlines=200 | endif
+
+	" Neovim terminal settings
+	if has('nvim')
+		autocmd TermOpen * setlocal modifiable
+		autocmd TermClose * buffer #
+		" autocmd TextYankPost *
+		"	\ silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}
+	endif
 
 	" Update filetype on save if empty
 	autocmd BufWritePost * nested
@@ -62,13 +79,10 @@ augroup user_plugin_filetype " {{{
 
 	autocmd FileType php
 		\ setlocal matchpairs-=<:> iskeyword+=\\ path+=/usr/local/share/pear
-"		\ | setlocal formatoptions=qroct " Correct indent after opening a phpdocblock
 
 	autocmd FileType python
-		\ setlocal foldmethod=indent expandtab smarttab nosmartindent
+		\ setlocal expandtab smarttab nosmartindent
 		\ | setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=80
-
-	autocmd FileType zsh setlocal foldenable foldmethod=marker
 
 	autocmd FileType html setlocal path+=./;/
 
@@ -77,11 +91,6 @@ augroup user_plugin_filetype " {{{
 		\ | setlocal autoindent formatoptions=tcroqn2 comments=n:>
 
 	autocmd FileType apache setlocal path+=./;/
-
-	autocmd FileType cam setlocal nonumber synmaxcol=10000
-
-	" autocmd FileType go highlight default link goErr WarningMsg |
-	" 	\ match goErr /\<err\>/
 
 augroup END " }}}
 
@@ -94,6 +103,12 @@ let g:PHP_removeCRwhenUnix = 0
 " }}}
 " Python {{{
 let g:python_highlight_all = 1
+" let g:python_highlight_builtins = 1
+" let g:python_highlight_exceptions = 1
+" let g:python_highlight_string_format = 1
+" let g:python_highlight_doctests = 1
+" let g:python_highlight_class_vars = 1
+" let g:python_highlight_operators = 1
 
 " }}}
 " Vim {{{

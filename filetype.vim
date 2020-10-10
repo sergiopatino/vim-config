@@ -7,9 +7,11 @@ endif
 
 augroup filetypedetect "{{{
 
+	autocmd BufNewFile,BufRead */.config/git/users/* setfiletype gitconfig
+
 	autocmd BufNewFile,BufRead */playbooks/*.{yml,yaml} setfiletype yaml.ansible
 	autocmd BufNewFile,BufRead */inventory/*            setfiletype ansible_hosts
-	autocmd BufNewFile,BufRead */templates/*.{yaml,tpl} setfiletype yaml.gotexttmpl
+	" autocmd BufNewFile,BufRead */templates/*.{yaml,tpl} setfiletype yaml.gotexttmpl
 
 	autocmd BufNewFile,BufRead *.hcl                setfiletype terraform
 	autocmd BufNewFile,BufRead yarn.lock            setfiletype yaml
