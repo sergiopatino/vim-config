@@ -35,6 +35,11 @@
 # Lazy Loading
 # ==========================================
 
+# ==========================================
+# Coding Productivity
+# ------------
+- repo: wakatime/vim-wakatime
+
 # Languages
 # ---------
 - { repo: hail2u/vim-css3-syntax, on_ft: css }

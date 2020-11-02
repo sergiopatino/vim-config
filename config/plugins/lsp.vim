@@ -19,8 +19,8 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <silent><buffer> gi     <Plug>(lsp-peek-implementation)
 	nmap <silent><buffer> gy     <Plug>(lsp-peek-type-definition)
 	nmap <buffer><leader>rn      <Plug>(lsp-rename)
-	nmap <silent><buffer> <C-]>  <Plug>(lsp-definition)
-	nmap <silent><buffer> g<C-]> <Plug>(lsp-peek-definition)
+	nmap <silent><buffer> gdt    :tab LspDefinition<CR>
+	nmap <silent><buffer> gdp    <Plug>(lsp-peek-definition)
 	nmap <silent><buffer> gd     <Plug>(lsp-peek-declaration)
 	nmap <silent><buffer> gY     <Plug>(lsp-type-hierarchy)
 	nmap <silent><buffer> ,s     <Plug>(lsp-signature-help)
