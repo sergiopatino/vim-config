@@ -5,6 +5,7 @@
 function! s:on_lsp_buffer_enabled() abort
 	setlocal omnifunc=lsp#complete
 	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  
 	" Slow
 	" setlocal foldmethod=expr
 	"	\ foldexpr=lsp#ui#vim#folding#foldexpr()
