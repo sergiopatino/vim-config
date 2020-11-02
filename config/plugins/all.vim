@@ -1,17 +1,6 @@
-<<<<<<< HEAD
-
-" Plugin Settings
-"---------------------------------------------------------
-||||||| fc3e398
-
-" Plugin Settings
-"---------------------------------------------------------
-
-=======
 " Plugin Keyboard-Mappings
 " ---
 
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 if dein#tap('denite.nvim')
 	nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
 	nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
@@ -84,9 +73,14 @@ if dein#tap('vim-clap')
 	autocmd user_events FileType clap_input call s:clap_mappings()
 
 	function! s:clap_mappings()
+		nnoremap <silent> <buffer> <nowait> <Space> :call clap#handler#tab_action()<CR>
 		nnoremap <silent> <buffer> <nowait>' :call clap#handler#tab_action()<CR>
 		inoremap <silent> <buffer> <Tab>   <C-R>=clap#navigation#linewise('down')<CR>
 		inoremap <silent> <buffer> <S-Tab> <C-R>=clap#navigation#linewise('up')<CR>
+		nnoremap <silent> <buffer> <C-j> :<C-u>call clap#navigation#linewise('down')<CR>
+		nnoremap <silent> <buffer> <C-k> :<C-u>call clap#navigation#linewise('up')<CR>
+		nnoremap <silent> <buffer> <C-n> :<C-u>call clap#navigation#linewise('down')<CR>
+		nnoremap <silent> <buffer> <C-p> :<C-u>call clap#navigation#linewise('up')<CR>
 		nnoremap <silent> <buffer> <C-f> :<c-u>call clap#navigation#scroll('down')<CR>
 		nnoremap <silent> <buffer> <C-b> :<c-u>call clap#navigation#scroll('up')<CR>
 
@@ -106,6 +100,8 @@ if dein#tap('vim-lsp')
 	autocmd User lsp_float_opened
 		\ nmap <buffer> <silent> <Esc> <Plug>(lsp-preview-close)
 	autocmd User lsp_float_closed silent! nunmap <buffer> <Esc>
+	autocmd user_events FileType markdown.lsp-hover
+		\ nmap <silent><buffer>q :wincmd z<CR>
 endif
 
 if dein#tap('defx.nvim')
@@ -165,8 +161,8 @@ if dein#tap('vim-sandwich')
 	xmap <silent> sr <Plug>(operator-sandwich-replace)
 	nmap <silent> sdb <Plug>(operator-sandwich-delete)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
 	nmap <silent> srb <Plug>(operator-sandwich-replace)<Plug>(operator-sandwich-release-count)<Plug>(textobj-sandwich-auto-a)
-	omap ib <Plug>(textobj-sandwich-auto-i)
-	xmap ib <Plug>(textobj-sandwich-auto-i)
+	omap ir <Plug>(textobj-sandwich-auto-i)
+	xmap ir <Plug>(textobj-sandwich-auto-i)
 	omap ab <Plug>(textobj-sandwich-auto-a)
 	xmap ab <Plug>(textobj-sandwich-auto-a)
 	omap is <Plug>(textobj-sandwich-query-i)
@@ -295,106 +291,6 @@ if dein#tap('vim-choosewin')
 	nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
 endif
 
-<<<<<<< HEAD
-if dein#tap('jedi-vim')
-	let g:jedi#completions_command = ''
-	let g:jedi#goto_command = '<C-]>'
-	let g:jedi#goto_assignments_command = 'gy'
-	let g:jedi#documentation_command = 'K'
-	let g:jedi#usages_command = 'gr'
-	let g:jedi#rename_command = '<Leader>R'
-endif
-
-if dein#tap('tern_for_vim')
-	autocmd user_events FileType javascript,javascriptreact
-		\  nnoremap <silent><buffer> K          :<C-u>TernDoc<CR>
-		\| nnoremap <silent><buffer> <C-]>      :<C-u>TernDefSplit<CR>
-		\| nnoremap <silent><buffer> gy         :<C-u>TernType<CR>
-		\| nnoremap <silent><buffer> gr         :<C-u>TernRefs<CR>
-		\| nnoremap <silent><buffer> <leader>R  :<C-u>TernRename<CR>
-endif
-
-if dein#tap('vim-gitgutter')
-	nmap ]g <Plug>(GitGutterNextHunk)
-	nmap [g <Plug>(GitGutterPrevHunk)
-	nmap gS <Plug>(GitGutterStageHunk)
-	xmap gS <Plug>(GitGutterStageHunk)
-	nmap <Leader>gr <Plug>(GitGutterUndoHunk)
-	nmap gs <Plug>(GitGutterPreviewHunk)
-endif
-
-if dein#tap('vim-go')
-	autocmd user_events FileType go
-		\   nmap <C-]> <Plug>(go-def-tab)
-		\ | nmap <Leader>god  <Plug>(go-describe)
-		\ | nmap <Leader>goc  <Plug>(go-callees)
-		\ | nmap <Leader>goC  <Plug>(go-callers)
-		\ | nmap <Leader>goi  <Plug>(go-info)
-		\ | nmap <Leader>gom  <Plug>(go-implements)
-		\ | nmap <Leader>gos  <Plug>(go-callstack)
-		\ | nmap <Leader>goe  <Plug>(go-referrers)
-		\ | nmap <Leader>gor  <Plug>(go-run)
-		\ | nmap <Leader>gov  <Plug>(go-vet)
-endif
-
-if dein#tap('phpcomplete-extended')
-	autocmd user_events FileType php
-		\   nmap <silent> <unique> K <Plug>(phpcomplete-extended-doc)
-		\ | nmap <silent> <unique> <C-]> <Plug>(phpcomplete-extended-goto)
-		\ | nmap <silent> <unique> <Leader>a <Plug>(phpcomplete-extended-add-use)
-endif
-
-||||||| fc3e398
-if dein#tap('jedi-vim')
-	let g:jedi#completions_command = ''
-	let g:jedi#goto_command = '<C-]>'
-	let g:jedi#goto_assignments_command = 'gy'
-	let g:jedi#documentation_command = 'K'
-	let g:jedi#usages_command = 'gr'
-	let g:jedi#rename_command = '<Leader>R'
-endif
-
-if dein#tap('tern_for_vim')
-	autocmd user_events FileType javascript,javascriptreact
-		\  nnoremap <silent><buffer> K          :<C-u>TernDoc<CR>
-		\| nnoremap <silent><buffer> <C-]>      :<C-u>TernDefSplit<CR>
-		\| nnoremap <silent><buffer> gy         :<C-u>TernType<CR>
-		\| nnoremap <silent><buffer> gr         :<C-u>TernRefs<CR>
-		\| nnoremap <silent><buffer> <leader>R  :<C-u>TernRename<CR>
-endif
-
-if dein#tap('vim-gitgutter')
-	nmap ]g <Plug>(GitGutterNextHunk)
-	nmap [g <Plug>(GitGutterPrevHunk)
-	nmap gS <Plug>(GitGutterStageHunk)
-	xmap gS <Plug>(GitGutterStageHunk)
-	nmap <Leader>gr <Plug>(GitGutterUndoHunk)
-	nmap gs <Plug>(GitGutterPreviewHunk)
-endif
-
-if dein#tap('vim-go')
-	autocmd user_events FileType go
-		\   nmap <C-]> <Plug>(go-def)
-		\ | nmap <Leader>god  <Plug>(go-describe)
-		\ | nmap <Leader>goc  <Plug>(go-callees)
-		\ | nmap <Leader>goC  <Plug>(go-callers)
-		\ | nmap <Leader>goi  <Plug>(go-info)
-		\ | nmap <Leader>gom  <Plug>(go-implements)
-		\ | nmap <Leader>gos  <Plug>(go-callstack)
-		\ | nmap <Leader>goe  <Plug>(go-referrers)
-		\ | nmap <Leader>gor  <Plug>(go-run)
-		\ | nmap <Leader>gov  <Plug>(go-vet)
-endif
-
-if dein#tap('phpcomplete-extended')
-	autocmd user_events FileType php
-		\   nmap <silent> <unique> K <Plug>(phpcomplete-extended-doc)
-		\ | nmap <silent> <unique> <C-]> <Plug>(phpcomplete-extended-goto)
-		\ | nmap <silent> <unique> <Leader>a <Plug>(phpcomplete-extended-add-use)
-endif
-
-=======
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 if dein#tap('vimagit')
 	nnoremap <silent> <Leader>mg :Magit<CR>
 endif
@@ -510,6 +406,18 @@ if dein#tap('caw.vim')
 	endfunction
 	autocmd user_events FileType * call InitCaw()
 	call InitCaw()
+endif
+
+if dein#tap('fin.vim')
+	nnoremap <Leader>f :<C-u>Fin<CR>
+
+	function! InitFin() abort
+		cmap <buffer><nowait> <Tab>   <Plug>(fin-line-next)
+		cmap <buffer><nowait> <S-Tab> <Plug>(fin-line-prev)
+		cmap <buffer><nowait> <C-j>   <Plug>(fin-line-next)
+		cmap <buffer><nowait> <C-k>   <Plug>(fin-line-prev)
+	endfunction
+	autocmd user_events FileType fin call InitFin()
 endif
 
 if dein#tap('vim-textobj-function')

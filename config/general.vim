@@ -62,7 +62,6 @@ if has('wildmenu')
 	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
 	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
 	set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
-	" set wildcharm=<C-z>  " substitue for 'wildchar' (<Tab>) in macros
 endif
 
 " }}}
@@ -129,13 +128,7 @@ augroup END
 " Tabs and Indents {{{
 " ----------------
 set textwidth=80    " Text width maximum chars before wrapping
-<<<<<<< HEAD
-set expandtab       " Expand tabs to spaces.
-||||||| fc3e398
-set noexpandtab     " Don't expand tabs to spaces.
-=======
 set noexpandtab     " Don't expand tabs to spaces
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 set tabstop=2       " The number of spaces a tab is
 set shiftwidth=2    " Number of spaces to use in auto(indent)
 set softtabstop=-1  " Automatically keeps in sync with shiftwidth
@@ -194,7 +187,7 @@ set splitbelow splitright       " Splits open bottom right
 set switchbuf=useopen           " Look for matching window buffers first
 set backspace=indent,eol,start  " Intuitive backspacing in insert mode
 set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
-set completeopt=menu,menuone    " Always show menu, even for one item
+set completeopt=menuone         " Always show menu, even for one item
 
 if has('patch-7.4.775')
 	set completeopt+=noselect       " Do not select a match in the menu

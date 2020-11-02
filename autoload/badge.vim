@@ -31,21 +31,10 @@ let s:caches = []
 " Clear cache on save
 augroup statusline_cache
 	autocmd!
-<<<<<<< HEAD
-	autocmd BufWritePre,FileChangedShellPost * unlet! b:badge_cache_trails
-	autocmd BufReadPost,BufFilePost,BufNewFile *
-		\ unlet! b:badge_cache_filename b:badge_cache_tab
-||||||| fc3e398
-	autocmd BufWritePre,WinEnter,BufReadPost * call badge#clear_cache()
-	autocmd User NeomakeJobFinished call badge#clear_cache()
-	autocmd User CocDiagnosticChange call badge#clear_cache()
-	autocmd User CocStatusChange call badge#clear_cache()
-=======
 	autocmd BufWritePre,FileChangedShellPost,TextChanged,InsertLeave *
 		\ unlet! b:badge_cache_trails
 	autocmd BufReadPost,BufFilePost,BufNewFile,BufWritePost *
 		\ for cache_name in s:caches | execute 'unlet! b:' . cache_name | endfor
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 augroup END
 
 function! badge#project() abort
@@ -207,7 +196,8 @@ function! badge#branch() abort
 endfunction
 
 function! badge#syntax() abort
-	" Returns syntax warnings from several plugins (ALE, Neomake, Syntastic)
+	" Returns syntax warnings from several plugins
+	" Supports vim-lsp, ALE, Neomake, and Syntastic
 	if &filetype =~? g:badge_filetype_blacklist
 		return ''
 	endif
@@ -215,42 +205,9 @@ function! badge#syntax() abort
 	let l:msg = ''
 	let l:errors = 0
 	let l:warnings = 0
-<<<<<<< HEAD
-	if exists('*neomake#Make')
-		let l:counts = neomake#statusline#get_counts(bufnr('%'))
-		let l:errors = get(l:counts, 'E', '')
-		let l:warnings = get(l:counts, 'W', '')
-	elseif exists('g:loaded_ale')
-		let l:counts = ale#statusline#Count(bufnr('%'))
-		let l:errors = l:counts.error + l:counts.style_error
-		let l:warnings = l:counts.total - l:errors
-	elseif exists('*SyntasticStatuslineFlag')
-		let l:msg = SyntasticStatuslineFlag()
-||||||| fc3e398
-	if ! exists('b:badge_cache_syntax') || empty(b:badge_cache_syntax)
-		let b:badge_cache_syntax = ''
-		if exists('*neomake#Make')
-			let l:counts = neomake#statusline#get_counts(bufnr('%'))
-			let l:errors = get(l:counts, 'E', '')
-			let l:warnings = get(l:counts, 'W', '')
-		elseif exists('g:loaded_ale')
-			let l:counts = ale#statusline#Count(bufnr('%'))
-			let l:errors = l:counts.error + l:counts.style_error
-			let l:warnings = l:counts.total - l:errors
-		elseif exists('*SyntasticStatuslineFlag')
-			let b:badge_cache_syntax = SyntasticStatuslineFlag()
-		endif
-		if l:errors > 0
-			let b:badge_cache_syntax .= printf(' %d ', l:errors)
-		endif
-		if l:warnings > 0
-			let b:badge_cache_syntax .= printf(' %d ', l:warnings)
-		endif
-		let b:badge_cache_syntax = substitute(b:badge_cache_syntax, '\s*$', '', '')
-=======
 	let l:hints = 0
 	let l:information = 0
-	if exists('*lsp#ui#vim#diagnostics#get_buffer_diagnostics_counts')
+	if exists('*lsp#activate') && get(g:, 'lsp_diagnostics_enabled', 1)
 		let l:counts = lsp#ui#vim#diagnostics#get_buffer_diagnostics_counts()
 		let l:errors = get(l:counts, 'error', '')
 		let l:warnings = get(l:counts, 'warning', '')
@@ -266,20 +223,7 @@ function! badge#syntax() abort
 		let l:warnings = l:counts.total - l:errors
 	elseif exists('*SyntasticStatuslineFlag')
 		let l:msg = SyntasticStatuslineFlag()
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 	endif
-<<<<<<< HEAD
-	if l:errors > 0
-		let l:msg .= printf(' %d ', l:errors)
-	endif
-	if l:warnings > 0
-		let l:msg .= printf(' %d ', l:warnings)
-	endif
-	return substitute(l:msg, '\s*$', '', '')
-||||||| fc3e398
-
-	return b:badge_cache_syntax
-=======
 	if l:errors > 0
 		let l:msg .= printf(' %d ', l:errors)
 	endif
@@ -293,7 +237,6 @@ function! badge#syntax() abort
 		let l:msg .= printf(' %d ', l:information)
 	endif
 	return substitute(l:msg, '\s*$', '', '')
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 endfunction
 
 function! badge#trails(...) abort

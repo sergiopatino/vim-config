@@ -61,116 +61,11 @@ augroup user_plugin_defx
 	"	\ |   silent! highlight! link CursorLine NONE
 	"	\ | endif
 
-	" autocmd WinEnter * if &filetype ==# 'defx'
-	"	\ |   silent! highlight! link CursorLine TabLineSel
-	"	\ | endif
-	"
-	" autocmd WinLeave * if &filetype ==# 'defx'
-	"	\ |   silent! highlight! link CursorLine NONE
-	"	\ | endif
-
 augroup END
 
 " Internal functions
 " ---
 
-<<<<<<< HEAD
-function! s:defx_close_tab(tabnr)
-	" When a tab is closed, find and delete any associated defx buffers
-	for l:nr in tabpagebuflist()
-		if getbufvar(l:nr, '&filetype') ==# 'defx'
-			silent! execute 'bdelete '.l:nr
-			break
-		endif
-	endfor
-endfunction
-
-function! s:defx_toggle_tree() abort
-	" Open current file, or toggle directory expand/collapse
-	if defx#is_directory()
-		return defx#do_action('open_or_close_tree')
-	endif
-	return defx#do_action('multi', ['drop', 'quit'])
-endfunction
-
-function! s:defx_handle_dirchanged(event)
-	" Refresh opened Defx windows when changing working-directory
-	let l:cwd = get(a:event, 'cwd', '')
-	let l:scope = get(a:event, 'scope', '')   " global, tab, window
-	let l:current_win = winnr()
-	if &filetype ==# 'defx' || empty(l:cwd) || empty(l:scope)
-		return
-	endif
-
-	" Find tab-page's defx window
-	for l:nr in tabpagebuflist()
-		if getbufvar(l:nr, '&filetype') ==# 'defx'
-			let l:winnr = bufwinnr(l:nr)
-			if l:winnr != -1
-				" Change defx's window directory location
-				if l:scope ==# 'window'
-					execute 'noautocmd' l:winnr . 'windo' 'lcd' l:cwd
-				else
-					execute 'noautocmd' l:winnr . 'wincmd' 'w'
-				endif
-				call defx#call_action('cd', [ l:cwd ])
-				execute 'noautocmd' l:current_win . 'wincmd' 'w'
-				break
-			endif
-		endif
-	endfor
-endfunction
-
-||||||| fc3e398
-" Deprecated after disabling defx's (buf)listed
-" function! s:defx_close_tab(tabnr)
-" 	" When a tab is closed, find and delete any associated defx buffers
-" 	for l:nr in tabpagebuflist()
-" 		if getbufvar(l:nr, '&filetype') ==# 'defx'
-" 			silent! execute 'bdelete '.l:nr
-" 			break
-" 		endif
-" 	endfor
-" endfunction
-
-function! s:defx_toggle_tree() abort
-	" Open current file, or toggle directory expand/collapse
-	if defx#is_directory()
-		return defx#do_action('open_or_close_tree')
-	endif
-	return defx#do_action('multi', ['drop', 'quit'])
-endfunction
-
-function! s:defx_handle_dirchanged(event)
-	" Refresh opened Defx windows when changing working-directory
-	let l:cwd = get(a:event, 'cwd', '')
-	let l:scope = get(a:event, 'scope', '')   " global, tab, window
-	let l:current_win = winnr()
-	if &filetype ==# 'defx' || empty(l:cwd) || empty(l:scope)
-		return
-	endif
-
-	" Find tab-page's defx window
-	for l:nr in tabpagebuflist()
-		if getbufvar(l:nr, '&filetype') ==# 'defx'
-			let l:winnr = bufwinnr(l:nr)
-			if l:winnr != -1
-				" Change defx's window directory location
-				if l:scope ==# 'window'
-					execute 'noautocmd' l:winnr . 'windo' 'lcd' l:cwd
-				else
-					execute 'noautocmd' l:winnr . 'wincmd' 'w'
-				endif
-				call defx#call_action('cd', [ l:cwd ])
-				execute 'noautocmd' l:current_win . 'wincmd' 'w'
-				break
-			endif
-		endif
-	endfor
-endfunction
-
-=======
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 function! s:jump_dirty(dir) abort
 	" Jump to the next position with defx-git dirty symbols
 	let l:icons = get(g:, 'defx_git_indicators', {})
@@ -199,8 +94,8 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> e     <SID>defx_toggle_tree()
 	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
 	nnoremap <silent><buffer><expr> h     defx#do_action('close_tree')
-	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree_recursive')
-	nnoremap <silent><buffer><expr> st    defx#do_action('multi', ['quit', ['drop', 'tabnew']])
+	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree', 'recursive')
+	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
 	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
 	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split'], 'quit'])
 	nnoremap <silent><buffer><expr> P     defx#do_action('preview')
@@ -213,7 +108,7 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> <Esc>  defx#do_action('quit')
 	nnoremap <silent><buffer><expr> q      defx#do_action('quit')
 	nnoremap <silent><buffer><expr> se     defx#do_action('save_session')
-	nnoremap <silent><buffer><expr> R  defx#do_action('redraw')
+	nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
 	nnoremap <silent><buffer><expr> <C-g>  defx#do_action('print')
 
 	" File/dir management
@@ -234,7 +129,6 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
 	nnoremap <silent><buffer><expr> <BS>  defx#async_action('cd', ['..'])
 	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
-	nnoremap <silent><buffer><expr> <CR>  defx#async_action('open_directory')
 	nnoremap <silent><buffer><expr> u   defx#do_action('cd', ['..'])
 	nnoremap <silent><buffer><expr> 2u  defx#do_action('cd', ['../..'])
 	nnoremap <silent><buffer><expr> 3u  defx#do_action('cd', ['../../..'])

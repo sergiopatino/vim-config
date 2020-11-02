@@ -25,44 +25,6 @@ map! <Nul> <C-Space>
 nmap <Leader><Leader> V
 vmap <Leader><Leader> <Esc>
 
-<<<<<<< HEAD
-" Change current word in a repeatable manner
-nnoremap <leader>cn *``cgn
-nnoremap <leader>cN *``cgN
-
-" Change selected word in a repeatable manner
-vnoremap <expr> <leader>cn "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgn"
-vnoremap <expr> <leader>cN "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgN"
-
-" Duplicate paragraph
-nnoremap <leader>cp yap<S-}>p
-
-" Cut & paste without pushing to register
-" xnoremap p  "0p
-" nnoremap x "_x
-
-"" delete without yanking
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d Delete will not post to register
-
-||||||| fc3e398
-" Change current word in a repeatable manner
-nnoremap <leader>cn *``cgn
-nnoremap <leader>cN *``cgN
-
-" Change selected word in a repeatable manner
-vnoremap <expr> <leader>cn "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgn"
-vnoremap <expr> <leader>cN "y/\\V\<C-r>=escape(@\", '/')\<CR>\<CR>" . "``cgN"
-
-" Duplicate paragraph
-nnoremap <leader>cp yap<S-}>p
-
-" Cut & paste without pushing to register
-" xnoremap p  "0p
-" nnoremap x "_x
-
-=======
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 " Toggle fold
 nnoremap <CR> za
 
@@ -77,10 +39,6 @@ vnoremap k gk
 " Easier line-wise movement
 nnoremap gh g^
 nnoremap gl g$
-
-"" delete without yanking
-" nnoremap <leader>d "_d
-" vnoremap <leader>d "_d Delete will not post to register
 
 " Location/quickfix list movement
 nmap ]l :lnext<CR>
@@ -149,34 +107,9 @@ inoremap <S-Return> <C-o>o
 " Deletes selection and start insert mode
 " vnoremap <BS> "_xi
 
-<<<<<<< HEAD
-" Tabs
-nnoremap <silent> f1 :<C-u>tabfirst<CR>
-nnoremap <silent> f9 :<C-u>tablast<CR>
-nnoremap <silent> fl :<C-U>tabnext<CR>
-nnoremap <silent> fh :<C-U>tabprevious<CR>
-
-" Move tabs left or right
-nnoremap <silent> f] :<C-u>tabm +1<CR>
-nnoremap <silent> f[ :<C-u>tabm -1<CR>
-
-" Uses g:lasttab set on TabLeave in MyAutoCmd
-let g:lasttab = 1
-nmap <silent> fL :execute 'tabn '.g:lasttab<CR>
-||||||| fc3e398
-" Tabs
-nnoremap <silent> g1 :<C-u>tabfirst<CR>
-nnoremap <silent> g5 :<C-u>tabprevious<CR>
-nnoremap <silent> g9 :<C-u>tablast<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
-=======
 " Re-select blocks after indenting in visual/select mode
 xnoremap < <gv
 xnoremap > >gv|
->>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 " Use tab for indenting in visual/select mode
 xnoremap <Tab> >gv|
@@ -223,14 +156,6 @@ nnoremap \ ;
 
 " Select last paste
 nnoremap <expr> gp '`['.strpart(getregtype(), 0, 1).'`]'
-
-" `<Tab>`/`<S-Tab>` to move between matches without leaving incremental search.
-" Note dependency on `'wildcharm'` being set to `<C-z>` in order for this to
-" work.
-" cnoremap <expr> <Tab>
-"	\ getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
-" cnoremap <expr> <S-Tab>
-"	\ getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>?<C-r>/' : '<S-Tab>'
 
 " Quick substitute within selected area
 xnoremap sg :s//gc<Left><Left><Left>
@@ -302,18 +227,17 @@ nmap <Leader>tw :execute('setlocal wrap! breakindent! colorcolumn=' .
 	\ (&colorcolumn == '' ? &textwidth : ''))<CR>
 
 " Tabs
-nnoremap <silent> f1 :<C-u>tabfirst<CR>
-nnoremap <silent> f9 :<C-u>tablast<CR>
-nnoremap <silent> fl :<C-U>tabnext<CR>
-nnoremap <silent> fh :<C-U>tabprevious<CR>
-
-" Move tabs left or right
-nnoremap <silent> f] :<C-u>tabm +1<CR>
-nnoremap <silent> f[ :<C-u>tabm -1<CR>
-
-" Uses g:lasttab set on TabLeave in MyAutoCmd
-let g:lasttab = 1
-nmap <silent> fL :execute 'tabn '.g:lasttab<CR>
+nnoremap <silent> g1 :<C-u>tabfirst<CR>
+nnoremap <silent> g5 :<C-u>tabprevious<CR>
+nnoremap <silent> g9 :<C-u>tablast<CR>
+nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
+nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
+nnoremap <silent> <A-j> :<C-U>tabnext<CR>
+nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
+nnoremap <silent> <A-{> :<C-u>-tabmove<CR>
+nnoremap <silent> <A-}> :<C-u>+tabmove<CR>
+" nnoremap <silent> <A-[> :<C-u>tabprevious<CR>
+" nnoremap <silent> <A-]> :<C-u>tabnext<CR>
 
 " Show vim syntax highlight groups for character under cursor
 nmap <silent> <Leader>h
@@ -405,17 +329,10 @@ nnoremap <silent> [Window]z  :<C-u>call <SID>zoom()<CR>
 nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
 nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
 
-" New split with empty buffer
-nnoremap <silent> sV :new<CR>
-nnoremap <silent> sG :vnew<CR>
-
 " Background dark/light toggle and contrasts
 nmap <silent> [Window]h :<C-u>call <SID>toggle_background()<CR>
 nmap <silent> [Window]- :<c-u>call <SID>toggle_contrast(-v:count1)<cr>
 nmap <silent> [Window]= :<c-u>call <SID>toggle_contrast(+v:count1)<cr>
-
-" Exit terminal mode in Deol
-tnoremap <ESC>   <C-\><C-n>
 
 function! s:toggle_background()
 	if ! exists('g:colors_name')
