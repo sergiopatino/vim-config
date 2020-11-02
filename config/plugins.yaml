@@ -160,10 +160,16 @@
     let g:go_highlight_string_spellcheck = 0
     let g:go_highlight_variable_declarations = 0
     let g:go_highlight_variable_assignments = 0
+<<<<<<< HEAD
+    let g:go_auto_type_info = 1
+    let g:go_def_mapping_enabled = 0
+||||||| fc3e398
+=======
     if has('nvim') || exists(':terminal')
       let g:go_term_enabled = 1
       let g:go_term_close_on_exit = 0
     endif
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 # Python related
 - { repo: vim-python/python-syntax, on_ft: python }

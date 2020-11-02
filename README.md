@@ -1,13 +1,22 @@
-# Rafael Bodill's Neo/vim Config
+# Neo/vim Config
 
 Lean mean Neo/vim machine, 30-45ms startup time.
 
 Best with [Neovim] or [Vim8] and `python3` enabled.
 
+<<<<<<< HEAD
+Based on Rafi Bodill's [vim-config](https://github.com/rafi/vim-config)
+||||||| fc3e398
+I encourage you to fork this repo and create your own experience. Learn how to
+tweak and change Neo/vim to the way _you_ like it. This is my cultivation of
+years of tweaking, use it as a git remote and stay in-touch with upstream for
+reference or cherry-picking.
+=======
 > I encourage you to fork this repo and create your own experience.
 > Learn how to tweak and change Neo/vim to the way YOU like it.
 > This is my cultivation of years of tweaking, use it as a git remote
 > and stay in-touch with upstream for reference or cherry-picking.
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 <details>
   <summary>
@@ -672,6 +681,50 @@ Note that,
 
 ### Editor UI
 
+<<<<<<< HEAD
+| Key   | Mode | Action
+| ----- |:----:| ------------------
+| `<leader>`+`ti` | Normal | Toggle indentation lines
+| `<leader>`+`ts` | Normal | Toggle spell-checker (:setlocal spell!)
+| `<leader>`+`tn` | Normal | Toggle line numbers (:setlocal nonumber!)
+| `<leader>`+`tl` | Normal | Toggle hidden characters (:setlocal nolist!)
+| `<leader>`+`th` | Normal | Toggle highlighted search (:set hlsearch!)
+| `<leader>`+`tw` | Normal | Toggle wrap (:setlocal wrap! breakindent!)
+| `Ctrl`+`j` | Normal | Move to split below
+| `Ctrl`+`k` | Normal | Move to upper split
+| `Ctrl`+`h` | Normal | Move to left split
+| `Ctrl`+`l` | Normal | Move to right split
+| `*` | Visual | Search selection forwards
+| `#` | Visual | Search selection backwards
+| `]`+`c`/`q` | Normal | Next on location/quickfix list
+| `]`+`c`/`q` | Normal | Previous on location/quickfix list
+| `s`+`h` | Normal | Toggle colorscheme background dark/light
+| `s`+`-` | Normal | Lower colorscheme contrast (Support solarized8)
+| `s`+`=` | Normal | Raise colorscheme contrast (Support solarized8)
+||||||| fc3e398
+| Key   | Mode | Action
+| ----- |:----:| ------------------
+| `<leader>`+`ti` | Normal | Toggle indentation lines
+| `<leader>`+`ts` | Normal | Toggle spell-checker (:setlocal spell!)
+| `<leader>`+`tn` | Normal | Toggle line numbers (:setlocal nonumber!)
+| `<leader>`+`tl` | Normal | Toggle hidden characters (:setlocal nolist!)
+| `<leader>`+`th` | Normal | Toggle highlighted search (:set hlsearch!)
+| `<leader>`+`tw` | Normal | Toggle wrap (:setlocal wrap! breakindent!)
+| `g1` | Normal | Go to first tab (:tabfirst)
+| `g9` | Normal | Go to last tab (:tablast)
+| `g5` | Normal | Go to previous tab (:tabprevious)
+| `Ctrl`+`j` | Normal | Move to split below
+| `Ctrl`+`k` | Normal | Move to upper split
+| `Ctrl`+`h` | Normal | Move to left split
+| `Ctrl`+`l` | Normal | Move to right split
+| `*` | Visual | Search selection forwards
+| `#` | Visual | Search selection backwards
+| `]`+`c`/`q` | Normal | Next on location/quickfix list
+| `]`+`c`/`q` | Normal | Previous on location/quickfix list
+| `s`+`h` | Normal | Toggle colorscheme background dark/light
+| `s`+`-` | Normal | Lower colorscheme contrast (Support solarized8)
+| `s`+`=` | Normal | Raise colorscheme contrast (Support solarized8)
+=======
 | Key   | Mode | Action             | Plugin or Mapping
 | ----- |:----:| ------------------ | ------
 | <kbd>Space</kbd>+<kbd>ts</kbd> | 𝐍 | Toggle spell-checker | <small>`:setlocal spell!`</small>
@@ -723,9 +776,47 @@ Note that,
 | <kbd>Space</kbd>+<kbd>gu</kbd> | 𝐍 | Open undo-tree | <small>[mbbill/undotree]</small>
 | <kbd>Space</kbd>+<kbd>K</kbd> | 𝐍 | Thesaurus | <small>[Ron89/thesaurus_query.vim]</small>
 | <kbd>Space</kbd>+<kbd>W</kbd> | 𝐍 | VimWiki | <small>[vimwiki/vimwiki]</small>
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 ### Window Management
 
+<<<<<<< HEAD
+| Key   | Mode | Action
+| ----- |:----:| ------------------
+| `q` | Normal | Quit window (and Vim, if last window)
+| `f1` | Normal | Go to first tab (:tabfirst)
+| `f9` | Normal | Go to last tab (:tablast)
+| `f`+`l` | Normal | Next tab
+| `f`+`h` | Normal | Previous tab
+| `f`+`L` | Normal | Last active tab
+| `f`+`L` | Normal | Last active tab
+| `f`+`[` | Normal | Move tab left
+| `f`+`]` | Normal | Move tab right
+| `s`+`v` | Normal | Horizontal split (:split)
+| `s`+`g` | Normal | Vertical split (:vsplit)
+| `s`+`t` | Normal | Open new tab (:tabnew)
+| `s`+`o` | Normal | Close other windows (:only)
+| `s`+`b` | Normal | Previous buffer (:b#)
+| `s`+`c` | Normal | Closes current buffer (:close)
+| `s`+`x` | Normal | Remove buffer, leave blank window
+| `<leader>`+`sv` | Normal | Split with previous buffer
+| `<leader>`+`sg` | Normal | Vertical split with previous buffer
+||||||| fc3e398
+| Key   | Mode | Action
+| ----- |:----:| ------------------
+| `q` | Normal | Quit window (and Vim, if last window)
+| `Ctrl`+`Tab` | Normal | Next tab
+| `Ctrl`+`Shift`+`Tab` | Normal | Previous tab
+| `s`+`v` | Normal | Horizontal split (:split)
+| `s`+`g` | Normal | Vertical split (:vsplit)
+| `s`+`t` | Normal | Open new tab (:tabnew)
+| `s`+`o` | Normal | Close other windows (:only)
+| `s`+`b` | Normal | Previous buffer (:b#)
+| `s`+`c` | Normal | Closes current buffer (:close)
+| `s`+`x` | Normal | Remove buffer, leave blank window
+| `<leader>`+`sv` | Normal | Split with previous buffer
+| `<leader>`+`sg` | Normal | Vertical split with previous buffer
+=======
 | Key   | Mode | Action             | Plugin or Mapping
 | ----- |:----:| ------------------ | ------
 | <kbd>q</kbd> | 𝐍 | Quit window (and Vim, if last window) | `:quit`
@@ -762,6 +853,7 @@ Note that,
 | <kbd>Space</kbd>+<kbd>gF</kbd> | 𝐍 | Git fetch | <small>[lambdalisue/gina.vim]</small>
 | <kbd>Space</kbd>+<kbd>gp</kbd> | 𝐍 | Git push | <small>[lambdalisue/gina.vim]</small>
 | <kbd>Space</kbd>+<kbd>go</kbd> | 𝐍 𝐕 | Open SCM detailed URL in browser | <small>[lambdalisue/gina.vim]</small>
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 ### Plugin: Denite
 
@@ -816,6 +908,69 @@ Note that,
 | <kbd>;e</kbd> | 𝐍 | Open file-explorer (toggle)
 | <kbd>;a</kbd> | 𝐍 | Focus current file in file-explorer
 | **Within _Defx_ window** ||
+<<<<<<< HEAD
+| `h` | Normal | Collapse directory tree
+| `j` / `k` | Normal | Move up and down the tree
+|  `l` | Normal | Toggle collapse/expand directory or open file
+|  `L` | Normal | Open file, quit defx
+| `<Space>` | Normal | Select current file or directory
+| `*` | Normal | Invert selection (select all)
+| `<Return>` | Normal | Move into the selected directory
+| `<Backspace>` | Normal | Move into the parent directory
+| `\` | Normal | Move to project root
+| `~` | Normal | Move to user home directory
+| `st` | Normal | Open file in new tab
+| `sv` | Normal | Open file in a horizontal split
+| `Sv` | Normal | Open file in a horizontal split, quit defx
+| `sg` | Normal | Open file in a vertical split
+| `Sg` | Normal | Open file in a vertical split, quit defx
+| `N` | Normal | Create new directories and/or files
+| `K` | Normal | Create new directory
+| `c`/`m`/`p` | Normal | Copy, move, and paste
+| `r` | Normal | Rename file or directory
+| `dd` | Normal | Delete selected files and directories
+| `y` | Normal | Yank selected item to clipboard
+| `R` | Normal | Redraw window
+| `w` | Normal | Toggle window size
+| `]`+`g` | Normal | Next dirty git item
+| `[`+`g` | Normal | Previous dirty git item
+| `x` / `gx` | Normal | Execute associated system application
+| `.`  | Normal | Toggle hidden filed
+| `gd` | Normal | Open git diff on selected file
+| `gl` | Normal | Open terminal file explorer
+| `gr` | Normal | Grep in selected directory
+| `gf` | Normal | Find files in selected directory
+
+### Plugin: Deoplete and Emmet
+||||||| fc3e398
+| `h` | Normal | Collapse directory tree
+| `j` / `k` | Normal | Move up and down the tree
+| `<Return>` / `l` | Normal | Toggle collapse/expand directory or open file
+| `<Space>` | Normal | Select current file or directory
+| `*` | Normal | Invert selection (select all)
+| `<Backspace>` | Normal | Move into the parent directory
+| `&` / `\` | Normal | Move to project root
+| `~` | Normal | Move to user home directory
+| `st` | Normal | Open file in new tab
+| `sv` | Normal | Open file in a horizontal split
+| `sg` | Normal | Open file in a vertical split
+| `N` | Normal | Create new directories and/or files
+| `K` | Normal | Create new directory
+| `c`/`m`/`p` | Normal | Copy, move, and paste
+| `r` | Normal | Rename file or directory
+| `dd` | Normal | Delete selected files and directories
+| `y` | Normal | Yank selected item to clipboard
+| `w` | Normal | Toggle window size
+| `]`+`g` | Normal | Next dirty git item
+| `[`+`g` | Normal | Previous dirty git item
+| `x` / `gx` | Normal | Execute associated system application
+| `gd` | Normal | Open git diff on selected file
+| `gl` | Normal | Open terminal file explorer
+| `gr` | Normal | Grep in selected directory
+| `gf` | Normal | Find files in selected directory
+
+### Plugin: Deoplete and Emmet
+=======
 | <kbd>j</kbd> or <kbd>k</kbd> | 𝐍 | Move up and down the tree
 | <kbd>l</kbd> or <kbd>Return</kbd> | 𝐍 | Toggle collapse/expand directory or open file
 | <kbd>h</kbd> | 𝐍 | Collapse directory tree
@@ -846,6 +1001,7 @@ Note that,
 | <kbd>gf</kbd> | 𝐍 | Find files in current position
 
 ### Plugin: Asyncomplete and Emmet
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 
 | Key   | Mode | Action
 | ----- |:----:| ------------------

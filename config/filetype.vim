@@ -64,6 +64,8 @@ augroup user_plugin_filetype " {{{
 		\|   execute 'normal! g`"zvzz'
 		\| endif
 
+	autocmd TabLeave * let g:lasttab = tabpagenr()
+
 	autocmd FileType crontab setlocal nobackup nowritebackup
 
 	autocmd FileType yaml.docker-compose setlocal expandtab

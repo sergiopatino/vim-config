@@ -129,7 +129,13 @@ augroup END
 " Tabs and Indents {{{
 " ----------------
 set textwidth=80    " Text width maximum chars before wrapping
+<<<<<<< HEAD
+set expandtab       " Expand tabs to spaces.
+||||||| fc3e398
+set noexpandtab     " Don't expand tabs to spaces.
+=======
 set noexpandtab     " Don't expand tabs to spaces
+>>>>>>> 7c124cded3ee8153c5d1725f67a4a367c29d324b
 set tabstop=2       " The number of spaces a tab is
 set shiftwidth=2    " Number of spaces to use in auto(indent)
 set softtabstop=-1  " Automatically keeps in sync with shiftwidth
