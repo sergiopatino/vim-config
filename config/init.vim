@@ -5,6 +5,9 @@
 "
 " Plugin-manager agnostic initialization and user configuration parsing
 
+# Needed if using fish shell
+set shell=/bin/sh
+
 " Set custom augroup
 augroup user_events
 	autocmd!
