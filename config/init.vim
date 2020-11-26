@@ -5,7 +5,7 @@
 "
 " Plugin-manager agnostic initialization and user configuration parsing
 
-# Needed if using fish shell
+" Needed if using fish shell
 set shell=/bin/sh
 
 " Set custom augroup
@@ -24,6 +24,15 @@ if has('termguicolors')
 	if empty($COLORTERM) || $COLORTERM =~# 'truecolor\|24bit'
 		set termguicolors
 	endif
+endif
+
+if ! has('nvim')
+	set t_Co=256
+	" Set Vim-specific sequences for RGB colors
+	" Fixes 'termguicolors' usage in vim+tmux
+	" :h xterm-true-color
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 " Disable vim distribution plugins
@@ -94,7 +103,7 @@ function! s:main()
 				\ $DATA_PATH . '/swap',
 				\ $VIM_PATH . '/spell' ]
 			if ! isdirectory(s:path)
-				call mkdir(s:path, 'p')
+				call mkdir(s:path, 'p', 0770)
 			endif
 		endfor
 
@@ -158,8 +167,13 @@ function! s:use_dein()
 
 		" Start propagating file paths and plugin presets
 		call dein#begin(l:cache_path, extend([expand('<sfile>')], s:config_paths))
+
 		for plugin in l:rc
-			call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
+			" If vim already started, don't re-add existing ones
+			if has('vim_starting')
+					\ || ! has_key(g:dein#_plugins, fnamemodify(plugin['repo'], ':t'))
+				call dein#add(plugin['repo'], extend(plugin, {}, 'keep'))
+			endif
 		endfor
 
 		" Add any local ./dev plugins
@@ -181,17 +195,6 @@ function! s:use_dein()
 			call dein#install()
 		endif
 	endif
-
-	filetype plugin indent on
-
-	" Only enable syntax when vim is starting
-	if has('vim_starting')
-		syntax enable
-	endif
-
-	" Trigger source event hooks
-	call dein#call_hook('source')
-	call dein#call_hook('post_source')
 endfunction
 
 function! s:use_plug() abort
