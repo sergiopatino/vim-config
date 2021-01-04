@@ -133,6 +133,7 @@ function! s:main()
 	call s:use_{s:package_manager}()
 endfunction
 
+" Use dein as a plugin manager
 function! s:use_dein()
 	let l:cache_path = $DATA_PATH . '/dein'
 
