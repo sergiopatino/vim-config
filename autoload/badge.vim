@@ -99,10 +99,12 @@ function! badge#filename(...) abort
 	if l:filetype =~? g:badge_filetype_blacklist
 		" Empty if owned by certain plugins
 		let l:fn = ''
-	elseif l:filetype =~ '^denite'
+	elseif l:filetype ==# 'denite' || l:filetype ==# 'denite-filter'
 		let l:fn = '⌖  denite'
 	elseif l:filetype ==# 'qf'
 		let l:fn = '⌗ list'
+	elseif l:filetype ==# 'TelescopePrompt'
+		let l:fn = '⌖  telescope'
 	elseif l:filetype ==# 'defx'
 		let l:defx = get(getbufvar(l:bufnr, 'defx', {}), 'context', {})
 		let l:fn = '⌯ ' . get(l:defx, 'buffer_name', 'defx')
@@ -167,8 +169,8 @@ function! badge#root() abort
 		let patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
 		for pattern in patterns
 			let is_dir = stridx(pattern, '/') != -1
-			let match = is_dir ? finddir(pattern, curr_dir.';')
-				\ : findfile(pattern, curr_dir.';')
+			let match = is_dir ? finddir(pattern, curr_dir . ';')
+				\ : findfile(pattern, curr_dir . ';')
 			if ! empty(match)
 				let dir = fnamemodify(match, is_dir ? ':p:h:h' : ':p:h')
 				call setbufvar('%', 'project_dir', dir)
@@ -207,8 +209,9 @@ function! badge#syntax() abort
 	let l:warnings = 0
 	let l:hints = 0
 	let l:information = 0
-	if exists('*lsp#activate') && get(g:, 'lsp_diagnostics_enabled', 1)
-		let l:counts = lsp#ui#vim#diagnostics#get_buffer_diagnostics_counts()
+	if exists('*lsp#get_buffer_diagnostics_counts')
+			\ && get(g:, 'lsp_diagnostics_enabled', 1)
+		let l:counts = lsp#get_buffer_diagnostics_counts()
 		let l:errors = get(l:counts, 'error', '')
 		let l:warnings = get(l:counts, 'warning', '')
 		let l:hints = get(l:counts, 'hint', '')
