@@ -38,7 +38,7 @@ function! Tabline()
 		if l:nr == l:current
 			let l:tabline .= '%#TabLineFill#%#TabLineSel# '
 		else
-			let l:tabline .= '%#TabLine#  '
+			let l:tabline .= '%#TabLine# '
 		endif
 
 		" Get file-name with custom cutoff settings
@@ -50,8 +50,8 @@ function! Tabline()
 		let l:win_count = tabpagewinnr(l:nr, '$')
 		for l:bufnr in l:bufnrlist
 			let l:bufname = bufname(l:bufnr)
-			if l:bufname =~ 'denite\|defx\|vimfiler\|fugitive\|magit\|fern'
-					\ || empty(l:bufname)
+			if empty(l:bufname) || l:bufname =~
+				\ '^\(denite\|defx\|fugitive\|magit\|fern\|hover\|clap_\|Telescope\)'
 				let l:win_count -= 1
 			endif
 		endfor
@@ -62,14 +62,14 @@ function! Tabline()
 		" Add '+' if one of the buffers in the tab page is modified
 		for l:bufnr in l:bufnrlist
 			if getbufvar(l:bufnr, "&modified")
-				let l:tabline .= (l:nr == l:current ? '%#Number#' : '%6*') . '+%*'
+				let l:tabline .= (l:nr == l:current ? '%#TabLineFill#%#TabLineSel#' : '%6*') . '+%*'
 				break
 			endif
 		endfor
 
 		" Right-side of single tab
 		if l:nr == l:current
-			let l:tabline .= '%#TabLineSel# %#TabLineFill#'
+			let l:tabline .= '%#TabLineSel# %#TabLineFill# '
 		else
 			let l:tabline .= '%#TabLine# '
 		endif
