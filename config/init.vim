@@ -197,6 +197,11 @@ function! s:use_dein()
 			call dein#install()
 		endif
 	endif
+
+	if has('vim_starting') && ! has('nvim')
+		filetype plugin indent on
+		syntax enable
+	endif
 endfunction
 
 function! s:use_plug() abort
@@ -325,7 +330,7 @@ function! s:load_yaml(filename)
 	elseif s:convert_tool ==# 'python'
 		let l:cmd = "python -c 'import sys,yaml,json; y=yaml.safe_load(sys.stdin.read()); print(json.dumps(y))'"
 	elseif s:convert_tool ==# 'yq'
-		let l:cmd = 'yq r -j -'
+		let l:cmd = 'yq e -j -I 0'
 	else
 		let l:cmd = s:convert_tool
 	endif
