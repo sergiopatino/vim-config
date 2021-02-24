@@ -119,8 +119,8 @@ if dein#tap('delimitMate')
 endif
 
 if dein#tap('vista.vim')
-	nnoremap <silent> <Leader>b :<C-u>Vista<CR>
-	nnoremap <silent> <Leader>a :<C-u>Vista show<CR>
+	nnoremap <silent> <Leader>vs :<C-u>Vista show<CR>
+	nnoremap <silent> <Leader>vl :<C-u>Vista lcn<CR>
 endif
 
 if dein#tap('emmet-vim')
