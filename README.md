@@ -1,4 +1,4 @@
-# Rafael Bodill's Neo/vim Config
+# Sergio's vim Config
 
 Lean mean Neo/vim machine, 30-45ms startup time.
 
@@ -943,6 +943,7 @@ Note that,
 ## Credits & Contribution
 
 Big thanks to the dark knight [Shougo](https://github.com/Shougo).
+Rafael Bodill's Neo/vim [Config](https://github.com/rafi/vim-config)
 
 [config/mappings.vim]: ./config/mappings.vim
 [plugin/whitespace.vim]: ./plugin/whitespace.vim
