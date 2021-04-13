@@ -47,6 +47,7 @@
 # Coding Productivity
 # ------------
 - repo: wakatime/vim-wakatime
+- repo: ruanyl/vim-gh-line
 
 # Languages
 # ---------
