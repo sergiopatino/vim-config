@@ -232,7 +232,6 @@ nmap <Leader>tw :execute('setlocal wrap! breakindent! colorcolumn=' .
 	\ (&colorcolumn == '' ? &textwidth : ''))<CR>
 
 " Tabs
-<<<<<<< HEAD
 nnoremap <silent> f1 :<C-u>tabfirst<CR>
 nnoremap <silent> f9 :<C-u>tablast<CR>
 nnoremap <silent> fl :<C-U>tabnext<CR>
@@ -245,32 +244,6 @@ nnoremap <silent> f[ :<C-u>tabm -1<CR>
 " Uses g:lasttab set on TabLeave in MyAutoCmd
 let g:lasttab = 1
 nmap <silent> fL :execute 'tabn '.g:lasttab<CR>
-||||||| 7354230
-nnoremap <silent> g1 :<C-u>tabfirst<CR>
-nnoremap <silent> g5 :<C-u>tabprevious<CR>
-nnoremap <silent> g9 :<C-u>tablast<CR>
-nnoremap <silent> <C-Tab> :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <A-{> :<C-u>-tabmove<CR>
-nnoremap <silent> <A-}> :<C-u>+tabmove<CR>
-" nnoremap <silent> <A-[> :<C-u>tabprevious<CR>
-" nnoremap <silent> <A-]> :<C-u>tabnext<CR>
-=======
-nnoremap <silent> g1 :<C-u>tabfirst<CR>
-nnoremap <silent> g5 :<C-u>tabprevious<CR>
-nnoremap <silent> g9 :<C-u>tablast<CR>
-
-nnoremap <silent> <C-Tab>   :<C-U>tabnext<CR>
-nnoremap <silent> <C-S-Tab> :<C-U>tabprevious<CR>
-nnoremap <silent> <A-j> :<C-U>tabnext<CR>
-nnoremap <silent> <A-k> :<C-U>tabprevious<CR>
-nnoremap <silent> <A-{> :<C-u>-tabmove<CR>
-nnoremap <silent> <A-}> :<C-u>+tabmove<CR>
-" nnoremap <silent> <A-[> :<C-u>tabprevious<CR>
-" nnoremap <silent> <A-]> :<C-u>tabnext<CR>
->>>>>>> f65d24a672be243b3d8d888f78ea5c43949e4ef2
 
 " Show vim syntax highlight groups for character under cursor
 nmap <silent> <Leader>h
