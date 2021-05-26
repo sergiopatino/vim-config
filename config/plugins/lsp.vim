@@ -27,6 +27,9 @@ function! s:on_lsp_buffer_enabled() abort
 	nmap <silent><buffer> gy     <Plug>(lsp-peek-type-definition)
 
 	nmap <silent><buffer> gdt    :tab LspDefinition<CR>
+	nmap <silent><buffer> gda    :aboveleft LspDefinition<CR>
+	nmap <silent><buffer> gdb    :belowright LspDefinition<CR>
+	nmap <silent><buffer> gdv    :vertical LspDefinition<CR>
 	nmap <silent><buffer> gdp    <Plug>(lsp-peek-definition)
 	nmap <silent><buffer> gd     <Plug>(lsp-peek-declaration)
 	nmap <silent><buffer> gY     <Plug>(lsp-type-hierarchy)
