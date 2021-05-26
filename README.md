@@ -50,7 +50,7 @@ Best with [Neovim] 0.5.x or [Vim] 8.x and `python3` enabled.
   * [Window Management](#window-management)
   * [Git Version Control](#git-version-control)
   * [Plugin: Denite](#plugin-denite)
-  * [Plugin: Defx](#plugin-defx)
+  * [Plugin: Fern](#plugin-fern)
   * [Plugin: Clap](#plugin-clap)
   * [Plugin: Asyncomplete and Emmet](#plugin-asyncomplete-and-emmet)
   * [Plugin: Any-Jump](#plugin-any-jump)
@@ -108,7 +108,7 @@ ln -s ~/.config/nvim ~/.vim  # For "regular" Vim
   Neovim follows the XDG base-directories convention, Vim doesn't.
 
 **_2._** Install the Python 3 `pynvim` library. This is also needed for Vim 8
-if you want to use Denite and Defx.
+if you want to use Denite.
 
 > Neovim: `./venv.sh` or `pip3 install --user pynvim`
 
@@ -263,7 +263,7 @@ want, _e.g._:
 * Plugin management with cache and lazy loading for speed
 * Auto-completion with Language-Server Protocol (LSP)
 * Project-aware tabs and labels
-* Defx as file-manager + Git status icons
+* Fern as file-manager + Git status icons
 * Extensive language extensions library
 
 _Note_ that 95% of the plugins are **[lazy-loaded]**.
@@ -345,9 +345,13 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 
 | Name           | Description
 | -------------- | ----------------------
-| [Shougo/defx.nvim] | Dark powered file explorer implementation
-| [kristijanhusak/defx-git] | Git status implementation for Defx
-| [kristijanhusak/defx-icons] | Filetype icons for Defx
+| [lambdalisue/fern.vim] | General purpose asynchronous tree viewer in pure vim
+| [lambdalisue/nerdfont.vim] | Fundemental plugin to handle Nerd Fonts
+| [lambdalisue/fern-git-status.vim] | Fern git status badge integration
+| [lambdalisue/fern-mapping-git.vim] | Fern git related mappings
+| [lambdalisue/fern-bookmark.vim] | Fern bookmark plugin
+| [lambdalisue/fern-renderer-nerdfont.vim] | Fern nerdfont integration
+| [lambdalisue/glyph-palette.vim] | Universal nerdfont palette
 | [tyru/caw.vim] | Robust comment plugin with operator support
 | [Shougo/context_filetype.vim] | Context filetype detection for nested code
 | [lambdalisue/fin.vim] | Filter the buffer content in-place
@@ -356,20 +360,15 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 | [tweekmonster/helpful.vim] | Display vim version numbers in docs
 | [lambdalisue/gina.vim] | Asynchronously control git repositories
 | [mhinz/vim-grepper] | Helps you win at grep
-| [kana/vim-altr] | Switch to the alternate file without interaction
 | [Shougo/vinarise.vim] | Hex editor
 | [guns/xterm-color-table.vim] | Display 256 xterm colors with their RGB equivalents
 | [cocopon/colorswatch.vim] | Generate a beautiful color swatch for the current buffer
 | [dstein64/vim-startuptime] | Visually profile Vim's startup time
 | [lambdalisue/suda.vim] | An alternative sudo.vim for Vim and Neovim
-| [liuchengxu/vim-which-key] | Shows key-bindings in pop-up
 | [brooth/far.vim] | Fast find and replace plugin
 | [pechorin/any-jump.vim] | Jump to any definition and references without overhead
-| [jaawerth/nrun.vim] | "which" and "exec" functions targeted at local node project bin
-| [Vigemus/iron.nvim] | Interactive REPL over Neovim
 | [kana/vim-niceblock] | Make blockwise Visual mode more useful
 | [t9md/vim-choosewin] | Choose window to use, like tmux's 'display-pane'
-| [wfxr/minimap.vim] | Blazing fast minimap for vim, powered by code-minimap
 | [mzlogin/vim-markdown-toc] | Generate table of contents for Markdown files
 | [reedes/vim-wordy] | Uncover usage problems in your writing
 | [liuchengxu/vista.vim] | Viewer & Finder for LSP symbols and tags in Vim
@@ -509,9 +508,13 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 [pearofducks/ansible-vim]: https://github.com/pearofducks/ansible-vim
 [hashivim/vim-terraform]: https://github.com/hashivim/vim-terraform
 
-[Shougo/defx.nvim]: https://github.com/Shougo/defx.nvim
-[kristijanhusak/defx-git]: https://github.com/kristijanhusak/defx-git
-[kristijanhusak/defx-icons]: https://github.com/kristijanhusak/defx-icons
+[lambdalisue/fern.vim]: https://github.com/lambdalisue/fern.vim
+[lambdalisue/nerdfont.vim]: https://github.com/lambdalisue/nerdfont.vim
+[lambdalisue/fern-git-status.vim]: https://github.com/lambdalisue/fern-git-status.vim
+[lambdalisue/fern-mapping-git.vim]: https://github.com/lambdalisue/fern-mapping-git.vim
+[lambdalisue/fern-bookmark.vim]: https://github.com/lambdalisue/fern-bookmark.vim
+[lambdalisue/fern-renderer-nerdfont.vim]: https://github.com/lambdalisue/fern-renderer-nerdfont.vim
+[lambdalisue/glyph-palette.vim]: https://github.com/lambdalisue/glyph-palette.vim
 [tyru/caw.vim]: https://github.com/tyru/caw.vim
 [Shougo/context_filetype.vim]: https://github.com/Shougo/context_filetype.vim
 [lambdalisue/fin.vim]: https://github.com/lambdalisue/fin.vim
@@ -520,20 +523,15 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 [tweekmonster/helpful.vim]: https://github.com/tweekmonster/helpful.vim
 [lambdalisue/gina.vim]: https://github.com/lambdalisue/gina.vim
 [mhinz/vim-grepper]: https://github.com/mhinz/vim-grepper
-[kana/vim-altr]: https://github.com/kana/vim-altr
 [Shougo/vinarise.vim]: https://github.com/Shougo/vinarise.vim
 [guns/xterm-color-table.vim]: https://github.com/guns/xterm-color-table.vim
 [cocopon/colorswatch.vim]: https://github.com/cocopon/colorswatch.vim
 [dstein64/vim-startuptime]: https://github.com/dstein64/vim-startuptime
 [lambdalisue/suda.vim]: https://github.com/lambdalisue/suda.vim
-[liuchengxu/vim-which-key]: https://github.com/liuchengxu/vim-which-key
 [brooth/far.vim]: https://github.com/brooth/far.vim
 [pechorin/any-jump.vim]: https://github.com/pechorin/any-jump.vim
-[jaawerth/nrun.vim]: https://github.com/jaawerth/nrun.vim
-[Vigemus/iron.nvim]: https://github.com/Vigemus/iron.nvim
 [kana/vim-niceblock]: https://github.com/kana/vim-niceblock
 [t9md/vim-choosewin]: https://github.com/t9md/vim-choosewin
-[wfxr/minimap.vim]: https://github.com/wfxr/minimap.vim
 [mzlogin/vim-markdown-toc]: https://github.com/mzlogin/vim-markdown-toc
 [reedes/vim-wordy]: https://github.com/reedes/vim-wordy
 [liuchengxu/vista.vim]: https://github.com/liuchengxu/vista.vim
@@ -607,7 +605,7 @@ Note that,
 
 * **Leader** key set as <kbd>Space</kbd>
 * **Local-Leader** key set as <kbd>;</kbd> and used for navigation and search
-  (Denite and Defx)
+  (Denite and Fern)
 * Disable <kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd> in normal mode by enabling `g:elite_mode` in `.vault.vim`
 
 <details open>
@@ -743,9 +741,6 @@ Note that,
 | <kbd>Space</kbd>+<kbd>a</kbd> | 𝐍 | Show nearby tag in structure window | <small>[liuchengxu/vista.vim]</small>
 | <kbd>Space</kbd>+<kbd>se</kbd> | 𝐍 | Save current workspace session | <small>[plugin/sessions.vim]</small>
 | <kbd>Space</kbd>+<kbd>sl</kbd> | 𝐍 | Load workspace session | <small>[plugin/sessions.vim]</small>
-| <kbd>Space</kbd>+<kbd>n</kbd>/<kbd>N</kbd> | 𝐍 | Open alternative file | <small>[kana/vim-altr]</small>
-| <kbd>Space</kbd>+<kbd>tc</kbd> | 𝐍 | Enable scroll-context window | <small>[wellle/context.vim]</small>
-| <kbd>Space</kbd>+<kbd>tp</kbd> | 𝐍 | Peek scroll-context window | <small>[wellle/context.vim]</small>
 | <kbd>Space</kbd>+<kbd>S</kbd> | 𝐍 𝐕 | Source selection | `y:execute @@`
 | <kbd>Space</kbd>+<kbd>?</kbd> | 𝐍 | Open the macOS dictionary on current word | `:!open dict://`
 | <kbd>Space</kbd>+<kbd>P</kbd> | 𝐍 | Use Marked 2 for real-time Markdown preview | <small>[Marked 2]</small>
@@ -775,6 +770,7 @@ Note that,
 | <kbd>so</kbd> | 𝐍 | Close other windows | `:only`
 | <kbd>sb</kbd> | 𝐍 | Previous buffer | `:b#`
 | <kbd>sc</kbd> | 𝐍 | Close current buffer | `:close`
+| <kbd>sq</kbd> | 𝐍 | Quit window | `:quit`
 | <kbd>sx</kbd> | 𝐍 | Delete buffer, leave blank window | `:enew │ bdelete`
 | <kbd>sz</kbd> | 𝐍 | Toggle window zoom | `:vertical resize │ resize`
 | <kbd>ssv</kbd> | 𝐍 | Split with previous buffer | `:split │ wincmd p │ e#`
@@ -848,39 +844,31 @@ Note that,
 | <kbd>yy</kbd> | 𝐍 | Yank
 | <kbd>Tab</kbd> | 𝐍 | List and choose action
 
-### Plugin: Defx
+### Plugin: Fern
 
 | Key   | Mode | Action
 | ----- |:----:| ------------------
 | <kbd>;e</kbd> | 𝐍 | Open file-explorer (toggle)
 | <kbd>;a</kbd> | 𝐍 | Focus current file in file-explorer
-| **Within _Defx_ window** ||
+| **Within _Fern_ window** ||
 | <kbd>j</kbd> or <kbd>k</kbd> | 𝐍 | Move up and down the tree
 | <kbd>l</kbd> or <kbd>Return</kbd> | 𝐍 | Toggle collapse/expand directory or open file
 | <kbd>h</kbd> | 𝐍 | Collapse directory tree
-| <kbd>t</kbd> | 𝐍 | Expand directory tree recursively
-| <kbd>.</kbd> | 𝐍 | Toggle hidden files
+| <kbd>!</kbd> | 𝐍 | Toggle hidden files
 | <kbd>Space</kbd> | 𝐍 | Select entry
-| <kbd>\*</kbd> | 𝐍 | Invert selection (select all)
-| <kbd>&</kbd> or <kbd>\</kbd> | 𝐍 | Change into current working directory
-| <kbd>~</kbd> | 𝐍 | Change to user home directory
-| <kbd>u</kbd> or <kbd>Backspace</kbd> | 𝐍 | Change into parent directory
-| <kbd>u</kbd> <kbd>2</kbd>/<kbd>3</kbd>/<kbd>4</kbd> | 𝐍 | Change into parent directory count
+| <kbd>^</kbd> | 𝐍 | Change into current working directory
+| <kbd>Backspace</kbd> | 𝐍 | Change into parent directory
 | <kbd>st</kbd> | 𝐍 | Open file in new tab
 | <kbd>sv</kbd> | 𝐍 | Open file in a horizontal split
 | <kbd>sg</kbd> | 𝐍 | Open file in a vertical split
 | <kbd>N</kbd> | 𝐍 | Create new directories and/or files
 | <kbd>K</kbd> | 𝐍 | Create new directory
-| <kbd>c</kbd> / <kbd>m</kbd> / <kbd>p</kbd> | 𝐍 | Copy, move, and paste
-| <kbd>r</kbd> | 𝐍 | Rename file or directory
-| <kbd>dd</kbd> | 𝐍 | Trash selected files and directories
-| <kbd>y</kbd> | 𝐍 | Yank path to clipboard
+| <kbd>c</kbd> / <kbd>m</kbd> | 𝐍 | Copy/move
+| <kbd>R</kbd> | 𝐍 | Rename file or directory
+| <kbd>D</kbd> | 𝐍 | Trash selected files and directories
+| <kbd>yy</kbd> | 𝐍 | Yank path to clipboard
 | <kbd>w</kbd> | 𝐍 | Toggle window size
-| <kbd>]g</kbd> | 𝐍 | Next dirty git item
-| <kbd>[g</kbd> | 𝐍 | Previous dirty git item
 | <kbd>x</kbd> or <kbd>gx</kbd> | 𝐍 | Execute associated system application
-| <kbd>gd</kbd> | 𝐍 | Open git diff on selected file
-| <kbd>gl</kbd> | 𝐍 | Open terminal file explorer with tmux
 | <kbd>gr</kbd> | 𝐍 | Grep in current position
 | <kbd>gf</kbd> | 𝐍 | Find files in current position
 
@@ -955,4 +943,4 @@ Rafael Bodill's Neo/vim [Config](https://github.com/rafi/vim-config)
 [Marked 2]: https://marked2app.com
 [Neovim]: https://github.com/neovim/neovim
 [Vim]: https://github.com/vim/vim
-[lazy-loaded]: ./config/plugins.yaml#L47
+[lazy-loaded]: ./config/plugins.yaml#L42
