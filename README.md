@@ -4,6 +4,8 @@ Lean mean Neo/vim machine, 30-45ms startup time.
 
 Best with [Neovim] 0.5.x or [Vim] 8.x and `python3` enabled.
 
+Based on Rafael Bodill's Neo/vim [Config](https://github.com/rafi/vim-config)
+
 > I encourage you to fork this repo and create your own experience.
 > Learn how to tweak and change Neo/vim to the way YOU like it.
 > This is my cultivation of years of tweaking, use it as a git remote
@@ -931,7 +933,6 @@ Note that,
 ## Credits & Contribution
 
 Big thanks to the dark knight [Shougo](https://github.com/Shougo).
-Rafael Bodill's Neo/vim [Config](https://github.com/rafi/vim-config)
 
 [config/mappings.vim]: ./config/mappings.vim
 [plugin/whitespace.vim]: ./plugin/whitespace.vim
