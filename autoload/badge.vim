@@ -135,7 +135,6 @@ function! badge#filename(...) abort
 			let l:icon = ''
 		elseif l:filetype ==# 'Outline'
 			let l:icon = ''
-			let parts = [ 'Outline' ]
 		elseif l:filetype ==# 'NeogitStatus'
 			let l:icon = ''
 		elseif l:filetype ==# 'lsp-installer'
@@ -144,6 +143,8 @@ function! badge#filename(...) abort
 		elseif l:filetype ==# 'spectre_panel'
 			let l:icon = ''
 			let parts = [ 'Spectre' ]
+		elseif l:filetype ==# 'NvimTree'
+			let l:icon = ''
 		elseif get(g:, 'nvim_web_devicons')
 			let l:icon = luaeval(
 				\ 'require"nvim-web-devicons".get_icon(_A[1], _A[2], { default = true })',
@@ -326,7 +327,7 @@ function! badge#indexing() abort
 			" Show only last progress message
 			let s:lsp_progress = s:lsp_progress[0]
 			let l:percent = get(s:lsp_progress, 'percentage')
-			if s:lsp_progress['message'] != '' && l:percent != 100
+			if ! empty(s:lsp_progress['message']) && l:percent != 100
 				let l:out .= s:lsp_progress['server'] . ':'
 					\ . s:lsp_progress['title'] . ' '
 					\ . s:lsp_progress['message']
