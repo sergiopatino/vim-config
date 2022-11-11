@@ -465,6 +465,7 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 [itchyny/vim-gitbranch]: https://github.com/itchyny/vim-gitbranch
 [romainl/vim-cool]: https://github.com/romainl/vim-cool
 [haya14busa/vim-asterisk]: https://github.com/haya14busa/vim-asterisk
+[rhysd/accelerated-jk]: https://github.com/rhysd/accelerated-jk
 [haya14busa/vim-edgemotion]: https://github.com/haya14busa/vim-edgemotion
 [t9md/vim-quickhl]: https://github.com/t9md/vim-quickhl
 [rafi/vim-sidemenu]: https://github.com/rafi/vim-sidemenu
