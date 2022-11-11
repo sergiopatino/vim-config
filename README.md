@@ -343,6 +343,7 @@ _Note_ that 95% of the plugins are **[lazy-loaded]**.
 | [itchyny/vim-gitbranch] | Lightweight git branch detection
 | [romainl/vim-cool] | Simple plugin that makes hlsearch more useful
 | [haya14busa/vim-asterisk] | Improved * motions
+| [rhysd/accelerated-jk] | Up/down movement acceleration
 | [haya14busa/vim-edgemotion] | Jump to the edge of block
 | [t9md/vim-quickhl] | Highlight words quickly
 | [rafi/vim-sidemenu] | Small side-menu useful for terminal users
