@@ -18,10 +18,11 @@ return {
 		version = false,
 		build = ':TSUpdate',
 		event = { 'LazyFile', 'VeryLazy' },
+		lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
 		cmd = { 'TSInstall', 'TSUpdate', 'TSUpdateSync' },
 		keys = {
-			{ 'v', desc = 'Increment selection', mode = 'x' },
-			{ 'V', desc = 'Shrink selection', mode = 'x' },
+			{ 'v', desc = 'Increment Selection', mode = 'x' },
+			{ 'V', desc = 'Shrink Selection', mode = 'x' },
 		},
 		init = function(plugin)
 			-- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
@@ -33,33 +34,6 @@ return {
 			require('nvim-treesitter.query_predicates')
 		end,
 		dependencies = {
-			-- Textobjects using treesitter queries
-			{
-				'nvim-treesitter/nvim-treesitter-textobjects',
-				config = function()
-					-- When in diff mode, we want to use the default
-					-- vim text objects c & C instead of the treesitter ones.
-					local move = require('nvim-treesitter.textobjects.move') ---@type table<string,fun(...)>
-					local configs = require('nvim-treesitter.configs')
-					for name, fn in pairs(move) do
-						if name:find('goto') == 1 then
-							move[name] = function(q, ...)
-								if vim.wo.diff then
-									local config = configs.get_module('textobjects.move')[name] ---@type table<string,string>
-									for key, query in pairs(config or {}) do
-										if q == query and key:find('[%]%[][cC]') then
-											vim.cmd('normal! ' .. key)
-											return
-										end
-									end
-								end
-								return fn(q, ...)
-							end
-						end
-					end
-				end,
-			},
-
 			-- Modern matchit and matchparen
 			{
 				'andymass/vim-matchup',
@@ -71,8 +45,8 @@ return {
 			-- Wisely add "end" in various filetypes
 			'RRethy/nvim-treesitter-endwise',
 		},
+		---@diagnostic disable-next-line: undefined-doc-name
 		---@type TSConfig
-		---@diagnostic disable-next-line: missing-fields
 		opts = {
 			highlight = { enable = true },
 			indent = { enable = true },
@@ -189,7 +163,6 @@ return {
 				'ssh_config',
 				'starlark',
 				'svelte',
-				'tmux',
 				'todotxt',
 				'toml',
 				'vim',
@@ -199,12 +172,14 @@ return {
 				'zig',
 			},
 		},
+		---@diagnostic disable-next-line: undefined-doc-name
 		---@param opts TSConfig
 		config = function(_, opts)
 			local langs = opts.ensure_installed
 			if type(langs) == 'table' then
 				---@type table<string, boolean>
 				local added = {}
+				---@diagnostic disable-next-line: inject-field
 				opts.ensure_installed = vim.tbl_filter(function(lang)
 					if added[lang] then
 						return false
@@ -214,6 +189,35 @@ return {
 				end, langs)
 			end
 			require('nvim-treesitter.configs').setup(opts)
+		end,
+	},
+
+	-----------------------------------------------------------------------------
+	-- Textobjects using treesitter queries
+	{
+		'nvim-treesitter/nvim-treesitter-textobjects',
+		lazy = true,
+		config = function()
+			-- When in diff mode, we want to use the default
+			-- vim text objects c & C instead of the treesitter ones.
+			local move = require('nvim-treesitter.textobjects.move') ---@type table<string,fun(...)>
+			local configs = require('nvim-treesitter.configs')
+			for name, fn in pairs(move) do
+				if name:find('goto') == 1 then
+					move[name] = function(q, ...)
+						if vim.wo.diff then
+							local config = configs.get_module('textobjects.move')[name] ---@type table<string,string>
+							for key, query in pairs(config or {}) do
+								if q == query and key:find('[%]%[][cC]') then
+									vim.cmd('normal! ' .. key)
+									return
+								end
+							end
+						end
+						return fn(q, ...)
+					end
+				end
+			end
 		end,
 	},
 

@@ -1,6 +1,6 @@
 # Rafael Bodill's Neovim Config
 
-Lean mean Neovim machine, 30-45ms startup time. Works best with [Neovim] ≥0.9
+Lean mean Neovim machine, 30-45ms startup time. Works best with [Neovim] ≥0.10
 
 :gear: See "[Extending](#extending)" for customizing configuration and adding
 plugins.
@@ -116,7 +116,7 @@ entire configuration has been rewritten to use [lazy.nvim] and Lua.
 ## Prerequisites
 
 * [git](https://git-scm.com/) ≥ 2.19.0 (`brew install git`)
-* [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) ≥ v0.9.0
+* [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) ≥ v0.10.0
   (`brew install neovim`)
 
 **Optional**, but highly recommended:
@@ -236,12 +236,12 @@ git pull --ff --ff-only
   * [rafi/](./lua/rafi)
     * [config/](./lua/config) — Neovim configurations
       * [autocmd.lua](./lua/rafi/config/autocmd.lua) — Auto-commands
-      * [init.lua](./lua/rafi/config/init.lua) — initialization
+      * [init.lua](./lua/rafi/config/init.lua) — Initialization
       * [keymaps.lua](./lua/rafi/config/keymaps.lua) — Key-mappings
       * [lazy.lua](./lua/rafi/config/lazy.lua) — Entry-point initialization
       * [options.lua](./lua/rafi/config/options.lua) — Editor settings
-    * [util/](./lua/rafi/util) — Utilities
     * [plugins/](./lua/plugins) — Plugins and configurations
+    * [util/](./lua/rafi/util) — Utility library
 * [snippets/](./snippets) — Personal code snippets
 
 ## Extending
@@ -259,9 +259,8 @@ Fork this repository and create a directory
 
 Adding plugins or override existing options:
 
-* `lua/plugins/*.lua` or `lua/plugins.lua` — Plugins (See [lazy.nvim] for
-  syntax)
-
+* `lua/plugins/*.lua` or `lua/plugins.lua` — Plugins (See [lazy.nvim] specs
+  for syntax)
 
 ### Extend: Plugins
 
@@ -351,10 +350,10 @@ return {
     (Default values are shown)
 
     ```lua
-    -- Enable auto format on-save
+    -- Auto format on-save
     vim.g.autoformat = false
 
-    -- Enable elite-mode (hjkl mode. arrow-keys resize window)
+    -- Elite-mode (hjkl mode. arrow-keys resize window)
     vim.g.elite_mode = false
 
     -- When enabled, 'q' closes any window
@@ -364,32 +363,56 @@ return {
     vim.g.structure_status = false
     ```
 
-1. Create `lua/config/setup.lua` and return _any_ of these functions:
+1. You can override LazyVim options. For example in `lua/plugins/core.lua`:
 
-    * `opts()` — Override RafiVim setup options
+    ```lua
+    return {
+      {
+        'LazyVim/LazyVim',
+        opts = {
+          icons = {
+            diagnostics = {
+              Error = '',
+              Warn  = '',
+              Info  = '',
+            },
+            status = {
+              diagnostics = {
+                error = 'E',
+                warn  = 'W',
+                info  = 'I',
+                hint  = 'H',
+              },
+            },
+          },
+        },
+      },
+    }
+    ```
+
+1. You can override lazy.nvim (package-manager) global options.
+   Create `lua/config/setup.lua` and return this function:
+
     * `lazy_opts()` — override LazyVim setup options
 
-    For example: (Default values are shown)
+    For example:
 
     ```lua
     local M = {}
 
     ---@return table
-    function M.opts()
-      return {
-        -- See lua/rafi/config/init.lua for all options
-      }
-    end
-
-    ---@return table
     function M.lazy_opts()
       return {
-        -- See https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/init.lua
+        -- See https://github.com/folke/lazy.nvim/#%EF%B8%8F-configuration
+        concurrency = jit.os:find('Windows') and (vim.uv.available_parallelism() * 2) or nil,
       }
     end
 
     return M
     ```
+
+1. You can completely override lazy.nvim setup by creating `lua/config/lazy.lua`
+   to replace `lua/rafi/config/lazy.lua` with your own procedure.
 
 ### Extend: LSP Settings
 
@@ -397,7 +420,7 @@ To override **LSP configurations**, you can either:
 
 1. Customize per project's `.neoconf.json`
 
-1. Or, override server options with nvim-lspconfig plugin, for example:
+1. Or, override server options with [nvim-lspconfig] plugin, for example:
 
    ```lua
    {
@@ -454,9 +477,7 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [nmac427/guess-indent.nvim] | Automatic indentation style detection
 | [tweekmonster/helpful.vim] | Display vim version numbers in docs
 | [lambdalisue/suda.vim] | An alternative sudo for Vim and Neovim
-| [christoomey/tmux-navigator] | Seamless navigation between tmux panes and vim splits
 | [folke/persistence.nvim] | Simple lua plugin for automated session management
-| [RRethy/vim-illuminate] | Highlights other uses of the word under the cursor
 | [mbbill/undotree] | Ultimate undo history visualizer
 | [folke/flash.nvim] | Search labels, enhanced character motions
 | [haya14busa/vim-edgemotion] | Jump to the edge of block
@@ -465,8 +486,7 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [folke/trouble.nvim] | Pretty lists to help you solve all code diagnostics
 | [akinsho/toggleterm.nvim] | Persist and toggle multiple terminals
 | [hedyhli/outline.nvim] | Code outline sidebar powered by LSP
-| [s1n7ax/nvim-window-picker] | Window picker
-| [rest-nvim/rest.nvim] | Fast Neovim http client written in Lua
+| [s1n7ax/nvim-window-picker] | Fancy Window picker
 | [dnlhc/glance.nvim] | Pretty window for navigating LSP locations
 | [nvim-pack/nvim-spectre] | Find the enemy and replace them with dark power
 | [echasnovski/mini.bufremove] | Helper for removing buffers
@@ -481,14 +501,13 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [hrsh7th/cmp-buffer] | nvim-cmp source for buffer words
 | [hrsh7th/cmp-path] | nvim-cmp source for path
 | [hrsh7th/cmp-emoji] | nvim-cmp source for emoji
-| [andersevenrud/cmp-tmux] | Tmux completion source for nvim-cmp
 | [L3MON4D3/LuaSnip] | Snippet Engine written in Lua
 | [rafamadriz/friendly-snippets] | Preconfigured snippets for different languages
 | [saadparwaiz1/cmp_luasnip] | Luasnip completion source for nvim-cmp
 | [windwp/nvim-autopairs] | Powerful auto-pair plugin with multiple characters support
 | [echasnovski/mini.surround] | Fast and feature-rich surround actions
 | [JoosepAlviste/nvim-ts-context-commentstring] | Set the commentstring based on the cursor location
-| [echasnovski/mini.comment] | Fast and familiar per-line commenting
+| [numToStr/Comment.nvim] | Powerful line and block-wise commenting
 | [echasnovski/mini.splitjoin] | Split and join arguments
 | [echasnovski/mini.trailspace] | Trailing whitespace highlight and remove
 | [AndrewRadev/linediff.vim] | Perform diffs on blocks of code
@@ -502,14 +521,6 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [rafi/theme-loader.nvim] | Use last-used colorscheme
 | [rafi/neo-hybrid.vim] | Modern dark colorscheme, hybrid improved
 | [rafi/awesome-colorschemes] | Awesome color-schemes
-| [AlexvZyl/nordic.nvim] | Nord for Neovim, but warmer and darker
-| [folke/tokyonight.nvim] | Clean, dark Neovim theme
-| [rebelot/kanagawa.nvim] | Inspired by the colors of the famous painting by Katsushika Hokusai
-| [olimorris/onedarkpro.nvim] | OneDarkPro theme
-| [EdenEast/nightfox.nvim] | Highly customizable theme
-| [nyoom-engineering/oxocarbon.nvim] | Dark and light theme inspired by IBM Carbon
-| [ribru17/bamboo.nvim] | Warm green theme
-| [catppuccin/nvim] | Soothing pastel theme
 
 ### Git Plugins
 
@@ -531,7 +542,7 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [nvim-neo-tree/neo-tree.nvim] | File explorer written in Lua
 | [nvim-telescope/telescope.nvim] | Find, Filter, Preview, Pick. All lua.
 | [jvgrootveld/telescope-zoxide] | Telescope extension for Zoxide
-| [rafi/telescope-thesaurus.nvim] | Browse synonyms from thesaurus.com
+| [rafi/telescope-thesaurus.nvim] | Browse synonyms for a word
 | [nvim-lua/plenary.nvim] | Lua functions library
 
 ### Treesitter & Syntax
@@ -556,7 +567,7 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | -------------- | ----------------------
 | [nvim-tree/nvim-web-devicons] | Lua fork of vim-devicons
 | [MunifTanjim/nui.nvim] | UI Component Library
-| [rcarriga/nvim-notify] | Fancy notification manager for NeoVim
+| [rcarriga/nvim-notify] | Fancy notification manager
 | [stevearc/dressing.nvim] | Improve the default vim-ui interfaces
 | [akinsho/bufferline.nvim] | Snazzy tab/bufferline
 | [folke/noice.nvim] | Replaces the UI for messages, cmdline and the popupmenu
@@ -567,25 +578,23 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 | [folke/which-key.nvim] | Create key bindings that stick
 | [tenxsoydev/tabs-vs-spaces.nvim] | Hint and fix deviating indentation
 | [t9md/vim-quickhl] | Highlight words quickly
-| [kevinhwang91/nvim-bqf] | Better quickfix window in Neovim
+| [kevinhwang91/nvim-bqf] | Better quickfix window
 | [uga-rosa/ccc.nvim] | Super powerful color picker/colorizer plugin
 | [itchyny/calendar.vim] | Calendar application
 
 [neovim/nvim-lspconfig]: https://github.com/neovim/nvim-lspconfig
 [folke/neoconf.nvim]: https://github.com/folke/neoconf.nvim
 [folke/neodev.nvim]: https://github.com/folke/neodev.nvim
-[williamboman/mason.nvim]: https://github.com/williamboman/
+[williamboman/mason.nvim]: https://github.com/williamboman/mason.nvim
 [williamboman/mason-lspconfig.nvim]: https://github.com/williamboman/mason-lspconfig.nvim
 [stevearc/conform.nvim]: https://github.com/stevearc/conform.nvim
 [mfussenegger/nvim-lint]: https://github.com/mfussenegger/nvim-lint
 
 [folke/lazy.nvim]: https://github.com/folke/lazy.nvim
 [nmac427/guess-indent.nvim]: https://github.com/nmac427/guess-indent.nvim
-[christoomey/tmux-navigator]: https://github.com/christoomey/vim-tmux-navigator
 [tweekmonster/helpful.vim]: https://github.com/tweekmonster/helpful.vim
 [lambdalisue/suda.vim]: https://github.com/lambdalisue/suda.vim
 [folke/persistence.nvim]: https://github.com/folke/persistence.nvim
-[RRethy/vim-illuminate]: https://github.com/RRethy/vim-illuminate
 [mbbill/undotree]: https://github.com/mbbill/undotree
 [folke/flash.nvim]: https://github.com/folke/flash.nvim
 [haya14busa/vim-edgemotion]: https://github.com/haya14busa/vim-edgemotion
@@ -594,7 +603,6 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 [folke/trouble.nvim]: https://github.com/folke/trouble.nvim
 [akinsho/toggleterm.nvim]: https://github.com/akinsho/toggleterm.nvim
 [s1n7ax/nvim-window-picker]: https://github.com/s1n7ax/nvim-window-picker
-[rest-nvim/rest.nvim]: https://github.com/rest-nvim/rest.nvim
 [dnlhc/glance.nvim]: https://github.com/dnlhc/glance.nvim
 [nvim-pack/nvim-spectre]: https://github.com/nvim-pack/nvim-spectre
 [echasnovski/mini.bufremove]: https://github.com/echasnovski/mini.bufremove
@@ -605,14 +613,13 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 [hrsh7th/cmp-buffer]: https://github.com/hrsh7th/cmp-buffer
 [hrsh7th/cmp-path]: https://github.com/hrsh7th/cmp-path
 [hrsh7th/cmp-emoji]: https://github.com/hrsh7th/cmp-emoji
-[andersevenrud/cmp-tmux]: https://github.com/andersevenrud/cmp-tmux
 [L3MON4D3/LuaSnip]: https://github.com/L3MON4D3/LuaSnip
 [rafamadriz/friendly-snippets]: https://github.com/rafamadriz/friendly-snippets
 [saadparwaiz1/cmp_luasnip]: https://github.com/saadparwaiz1/cmp_luasnip
 [windwp/nvim-autopairs]: https://github.com/windwp/nvim-autopairs
 [echasnovski/mini.surround]: https://github.com/echasnovski/mini.surround
 [JoosepAlviste/nvim-ts-context-commentstring]: https://github.com/JoosepAlviste/nvim-ts-context-commentstring
-[echasnovski/mini.comment]: https://github.com/echasnovski/mini.comment
+[numToStr/Comment.nvim]: https://github.com/numToStr/Comment.nvim
 [echasnovski/mini.splitjoin]: https://github.com/echasnovski/mini.splitjoin
 [echasnovski/mini.trailspace]: https://github.com/echasnovski/mini.trailspace
 [AndrewRadev/linediff.vim]: https://github.com/AndrewRadev/linediff.vim
@@ -622,14 +629,6 @@ _Note_ that 95% of the plugins are **lazy-loaded**.
 [rafi/theme-loader.nvim]: https://github.com/rafi/theme-loader.nvim
 [rafi/neo-hybrid.vim]: https://github.com/rafi/neo-hybrid.vim
 [rafi/awesome-colorschemes]: https://github.com/rafi/awesome-vim-colorschemes
-[AlexvZyl/nordic.nvim]: https://github.com/AlexvZyl/nordic.nvim
-[folke/tokyonight.nvim]: https://github.com/folke/tokyonight.nvim
-[rebelot/kanagawa.nvim]: https://github.com/rebelot/kanagawa.nvim
-[olimorris/onedarkpro.nvim]: https://github.com/olimorris/onedarkpro.nvim
-[EdenEast/nightfox.nvim]: https://github.com/EdenEast/nightfox.nvim
-[nyoom-engineering/oxocarbon.nvim]: https://github.com/nyoom-engineering/oxocarbon.nvim
-[ribru17/bamboo.nvim]: https://github.com/ribru17/bamboo.nvim
-[catppuccin/nvim]: https://github.com/catppuccin/nvim
 
 [lewis6991/gitsigns.nvim]: https://github.com/lewis6991/gitsigns.nvim
 [sindrets/diffview.nvim]: https://github.com/sindrets/diffview.nvim
@@ -697,20 +696,50 @@ Spec: `rafi.plugins.extras.coding.<name>`
 | Name           | Repository     | Description
 | -------------- | -------------- | ----------------------
 | `align`        | [echasnovski/mini.align] | Align text interactively
+| `chainsaw`     | [chrisgrieser/nvim-chainsaw] | Create log statements on the fly
 | `cmp-git`      | [petertriho/cmp-git] | Git source for nvim-cmp
 | `copilot`      | [zbirenbaum/copilot.lua] | Fully featured & enhanced copilot
 | `editorconfig` | [sgur/vim-editorconfig] | EditorConfig plugin written entirely in Vimscript
 | `emmet`        | [mattn/emmet-vim] | Provides support for expanding abbreviations alá emmet
+| `mini.comment` | [echasnovski/mini.comment] | Fast and familiar per-line commenting
 | `minipairs`    | [echasnovski/mini.pairs] | Automatically manage character pairs
+| `neogen`       | [danymat/neogen] | Annotation generator
 | `sandwich`     | [machakann/vim-sandwich] | Search, select, and edit sandwich text objects
 
 [echasnovski/mini.align]: https://github.com/echasnovski/mini.align
+[chrisgrieser/nvim-chainsaw]: https://github.com/chrisgrieser/nvim-chainsaw
 [petertriho/cmp-git]: https://github.com/petertriho/cmp-git
 [zbirenbaum/copilot.lua]: https://github.com/zbirenbaum/copilot.lua
 [sgur/vim-editorconfig]: https://github.com/sgur/vim-editorconfig
 [mattn/emmet-vim]: https://github.com/mattn/emmet-vim
+[echasnovski/mini.comment]: https://github.com/echasnovski/mini.comment
 [echasnovski/mini.pairs]: https://github.com/echasnovski/mini.pairs
+[danymat/neogen]: https://github.com/danymat/neogen
 [machakann/vim-sandwich]: https://github.com/machakann/vim-sandwich
+
+### Extra Plugins: Colorscheme
+
+Spec: `rafi.plugins.extras.colorscheme.<name>`
+
+| Name           | Repository     | Description
+| -------------- | -------------- | ----------------------
+| `nordic`       | [AlexvZyl/nordic.nvim] | Nord for Neovim, but warmer and darker
+| `tokyonight`   | [folke/tokyonight.nvim] | Clean, dark Neovim theme
+| `kanagawa`     | [rebelot/kanagawa.nvim] | Inspired by the colors of the famous painting by Katsushika Hokusai
+| `onedarkpro`   | [olimorris/onedarkpro.nvim] | OneDarkPro theme
+| `nightfox`     | [EdenEast/nightfox.nvim] | Highly customizable theme
+| `oxocarbon`    | [nyoom-engineering/oxocarbon.nvim] | Dark and light theme inspired by IBM Carbon
+| `bamboo`       | [ribru17/bamboo.nvim] | Warm green theme
+| `catppuccin`   | [catppuccin/nvim] | Soothing pastel theme
+
+[AlexvZyl/nordic.nvim]: https://github.com/AlexvZyl/nordic.nvim
+[folke/tokyonight.nvim]: https://github.com/folke/tokyonight.nvim
+[rebelot/kanagawa.nvim]: https://github.com/rebelot/kanagawa.nvim
+[olimorris/onedarkpro.nvim]: https://github.com/olimorris/onedarkpro.nvim
+[EdenEast/nightfox.nvim]: https://github.com/EdenEast/nightfox.nvim
+[nyoom-engineering/oxocarbon.nvim]: https://github.com/nyoom-engineering/oxocarbon.nvim
+[ribru17/bamboo.nvim]: https://github.com/ribru17/bamboo.nvim
+[catppuccin/nvim]: https://github.com/catppuccin/nvim
 
 ### Extra Plugins: Editor
 
@@ -722,6 +751,7 @@ Spec: `rafi.plugins.extras.editor.<name>`
 | `flybuf`      | [glepnir/flybuf.nvim]   | List buffers in a float window
 | `harpoon`     | [ThePrimeagen/harpoon]  | Marks for navigating your project
 | `minivisits`  | [echasnovski/mini.visits] | Track and reuse file system visits
+| `rest`        | [rest-nvim/rest.nvim] | Fast Neovim http client written in Lua
 | `sidebar`     | [sidebar-nvim/sidebar.nvim] | Generic and modular lua sidebar
 | `ufo`         | [kevinhwang91/nvim-ufo] | Make folds look modern and keep a high performance
 
@@ -729,6 +759,7 @@ Spec: `rafi.plugins.extras.editor.<name>`
 [glepnir/flybuf.nvim]: https://github.com/glepnir/flybuf.nvim
 [ThePrimeagen/harpoon]: https://github.com/ThePrimeagen/harpoon
 [echasnovski/mini.visits]: https://github.com/echasnovski/mini.visits
+[rest-nvim/rest.nvim]: https://github.com/rest-nvim/rest.nvim
 [sidebar-nvim/sidebar.nvim]: https://github.com/sidebar-nvim/sidebar.nvim
 [kevinhwang91/nvim-ufo]: https://github.com/kevinhwang91/nvim-ufo
 
@@ -753,15 +784,20 @@ Spec: `rafi.plugins.extras.lang.<name>`
 | `docker`         | syntax, lsp, lint
 | `go`             | syntax, lsp, formatter, dap [leoluz/nvim-dap-go], test [nvim-neotest/neotest-go]
 | `helm`           | syntax, lsp
+| `markdown`       | syntax, lsp, browser preview [iamcco/markdown-preview.nvim]
 | `python`         | syntax, lsp, dap [mfussenegger/nvim-dap-python], test, [rafi/neoconf-venom.nvim]
+| `tmux`           | syntax, completion [andersevenrud/cmp-tmux], keymaps [christoomey/tmux-navigator]
 | `yaml`           | syntax, lsp, schemas, [b0o/SchemaStore.nvim]
 
 [pearofducks/ansible-vim]: https://github.com/pearofducks/ansible-vim
 [leoluz/nvim-dap-go]: https://github.com/leoluz/nvim-dap-go
 [nvim-neotest/neotest-go]: https://github.com/nvim-neotest/neotest-go
+[iamcco/markdown-preview.nvim]: https://github.com/iamcco/markdown-preview.nvim
 [mfussenegger/nvim-dap-python]: https://github.com/mfussenegger/nvim-dap-python
 [rafi/neoconf-venom.nvim]: https://github.com/rafi/neoconf-venom.nvim
 [b0o/SchemaStore.nvim]: https://github.com/b0o/SchemaStore.nvim
+[christoomey/tmux-navigator]: https://github.com/christoomey/vim-tmux-navigator
+[andersevenrud/cmp-tmux]: https://github.com/andersevenrud/cmp-tmux
 
 ### Extra Plugins: Linting
 
@@ -825,9 +861,12 @@ Spec: `rafi.plugins.extras.ui.<name>`
 | `cybu`            | [ghillb/cybu.nvim] | Cycle buffers with a customizable notification window
 | `deadcolumn`      | [Bekaboo/deadcolumn.nvim] | Show colorcolumn dynamically
 | `goto-preview`    | [rmagatti/goto-preview] | Preview definitions using floating windows
+| `headlines`       | [lukas-reineke/headlines.nvim] | Adds horizontal highlights for headlines and code background.
+| `illuminate`      | [RRethy/vim-illuminate] | Highlights other uses of the word under the cursor
 | `incline`         | [b0o/incline.nvim] | Floating statuslines
 | `miniclue`        | [echasnovski/mini.clue] | Show next key clues
 | `minimap`         | [echasnovski/mini.map] | Window with buffer text overview, scrollbar and highlights
+| `render-markdown` | [MeanderingProgrammer/markdown.nvim] | Improve viewing Markdown files
 | `symbols-outline` | [simrat39/symbols-outline.nvim] | Tree like view for symbols using LSP
 
 [goolord/alpha-nvim]: https://github.com/goolord/alpha-nvim
@@ -836,9 +875,12 @@ Spec: `rafi.plugins.extras.ui.<name>`
 [ghillb/cybu.nvim]: https://github.com/ghillb/cybu.nvim
 [Bekaboo/deadcolumn.nvim]: https://github.com/Bekaboo/deadcolumn.nvim
 [rmagatti/goto-preview]: https://github.com/rmagatti/goto-preview
+[lukas-reineke/headlines.nvim]: https://github.com/lukas-reineke/headlines.nvim
+[RRethy/vim-illuminate]: https://github.com/RRethy/vim-illuminate
 [b0o/incline.nvim]: https://github.com/b0o/incline.nvim
 [echasnovski/mini.clue]: https://github.com/echasnovski/mini.clue
 [echasnovski/mini.map]: https://github.com/echasnovski/mini.map
+[MeanderingProgrammer/markdown.nvim]: https://github.com/MeanderingProgrammer/markdown.nvim
 [simrat39/symbols-outline.nvim]: https://github.com/simrat39/symbols-outline.nvim
 
 ### LazyVim Extras
@@ -894,10 +936,10 @@ Note that,
 | <kbd>gj</kbd> / <kbd>gk</kbd> | 𝐍 𝐕 𝐒 | Jump to edge upward/downward | <small>[haya14busa/vim-edgemotion]</small>
 | <kbd>gh</kbd> / <kbd>gl</kbd> | 𝐍 𝐕 | Easier line-wise movement | <small>`g^` `g$`</small>
 | <kbd>zl</kbd> / <kbd>zh</kbd> | 𝐍 | Scroll horizontally and vertically wider | <small>`z4` `l/h`</small>
-| <kbd>Ctrl</kbd>+<kbd>j</kbd> | 𝐍 | Move to split below | <small>[christoomey/tmux-navigator]</small>
-| <kbd>Ctrl</kbd>+<kbd>k</kbd> | 𝐍 | Move to upper split | <small>[christoomey/tmux-navigator]</small>
-| <kbd>Ctrl</kbd>+<kbd>h</kbd> | 𝐍 | Move to left split | <small>[christoomey/tmux-navigator]</small>
-| <kbd>Ctrl</kbd>+<kbd>l</kbd> | 𝐍 | Move to right split | <small>[christoomey/tmux-navigator]</small>
+| <kbd>Ctrl</kbd>+<kbd>j</kbd> | 𝐍 | Move to split below | <small>`<C-w>j` or [christoomey/tmux-navigator]</small>
+| <kbd>Ctrl</kbd>+<kbd>k</kbd> | 𝐍 | Move to upper split | <small>`<C-w>k` or [christoomey/tmux-navigator]</small>
+| <kbd>Ctrl</kbd>+<kbd>h</kbd> | 𝐍 | Move to left split | <small>`<C-w>h` or [christoomey/tmux-navigator]</small>
+| <kbd>Ctrl</kbd>+<kbd>l</kbd> | 𝐍 | Move to right split | <small>`<C-w>l` or [christoomey/tmux-navigator]</small>
 | <kbd>Return</kbd> | 𝐍 | Toggle fold under cursor | <small>`za`</small>
 | <kbd>Shift</kbd>+<kbd>Return</kbd> | 𝐍 | Focus the current fold by closing all others | <small>`zMzv`</small>
 | <kbd>Ctrl</kbd>+<kbd>f</kbd> | 𝐂 | Move cursor forwards in command | <kbd>Right</kbd>
@@ -929,7 +971,6 @@ Note that,
 | Key   | Mode | Action             | Plugin or Mapping
 | ----- |:----:| ------------------ | ------
 | <kbd>],</kbd> or <kbd>[,</kbd> | 𝐍 | Next/previous parameter | <small>[akinsho/bufferline.nvim]</small>
-| <kbd>]]</kbd> or <kbd>[[</kbd> | 𝐍 | Next/previous reference | <small>[RRethy/vim-illuminate]</small>
 | <kbd>]q</kbd> or <kbd>[q</kbd> | 𝐍 | Next/previous on quick-fix | <small>`:cnext` / `:cprev`</small>
 | <kbd>]a</kbd> or <kbd>[a</kbd> | 𝐍 | Next/previous on location-list | <small>`:lnext` / `:lprev`</small>
 | <kbd>]d</kbd> or <kbd>[d</kbd> | 𝐍 | Next/previous diagnostics |
@@ -992,9 +1033,9 @@ Note that,
 | <kbd>K</kbd>  | 𝐍 | Show hover help or collapsed fold | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>gK</kbd> | 𝐍 | Show signature help | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>cl</kbd>  | 𝐍 | Open LSP info window | <small>[plugins/lsp/keymaps.lua]</small>
-| <kbd>Space</kbd> <kbd>cs</kbd>  | 𝐍 | Formatter menu selection | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>cr</kbd>  | 𝐍 | Rename | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>ce</kbd>  | 𝐍 | Open diagnostics window | <small>[plugins/lsp/keymaps.lua]</small>
+| <kbd>Space</kbd> <kbd>co</kbd>  | 𝐍 | Formatter menu selection | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>ca</kbd>  | 𝐍 𝐕 | Code action | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>cA</kbd>  | 𝐍 | Source action | <small>[plugins/lsp/keymaps.lua]</small>
 | <kbd>Space</kbd> <kbd>chi</kbd>  | 𝐍 | LSP incoming calls | <small>[plugins/lsp/keymaps.lua]</small>
@@ -1034,10 +1075,11 @@ Note that,
 | <kbd>Shift</kbd>+<kbd>Return</kbd> | 𝐈 | Start new line from any cursor position | <small>`<C-o>o`</small>
 | <kbd>]</kbd> <kbd>Space</kbd> | 𝐍 | Add new line below | <small>`o<Esc>`</small>
 | <kbd>[</kbd> <kbd>Space</kbd> | 𝐍 | Add new line above | <small>`O<Esc>`</small>
-| <kbd>gc</kbd> | 𝐍 𝐕 | Comment prefix | <small>[echasnovski/mini.comment]</small>
-| <kbd>gcc</kbd> | 𝐍 𝐕 | Toggle comments | <small>[echasnovski/mini.comment]</small>
+| <kbd>gc</kbd> | 𝐍 𝐕 | Comment prefix | <small>[numToStr/Comment.nvim]</small>
+| <kbd>gcc</kbd> | 𝐍 𝐕 | Toggle comments | <small>[numToStr/Comment.nvim]</small>
 | <kbd>Space</kbd>+<kbd>j</kbd> or <kbd>k</kbd> | 𝐍 𝐕 | Move lines down/up | <small>`:m` …
-| <kbd>Space</kbd>+<kbd>v</kbd> | 𝐍 𝐕 | Toggle single-line comments | <small>[echasnovski/mini.comment]</small>
+| <kbd>Space</kbd>+<kbd>v</kbd> | 𝐍 𝐕 | Toggle line-wise comments | <small>[numToStr/Comment.nvim]</small>
+| <kbd>Space</kbd>+<kbd>V</kbd> | 𝐍 𝐕 | Toggle block-wise comments | <small>[numToStr/Comment.nvim]</small>
 | <kbd>Space</kbd>+<kbd>dd</kbd> | 𝐍 𝐕 | Duplicate line or selection | <small>[config/keymaps.lua]</small>
 | <kbd>Space</kbd>+<kbd>p</kbd> | 𝐍 | Duplicate paragraph | <small>`yap<S-}>p`</small>
 | <kbd>Space</kbd>+<kbd>cw</kbd> | 𝐍 | Remove all spaces at EOL | <small>[echasnovski/mini.trailspace]</small>

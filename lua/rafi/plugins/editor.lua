@@ -1,8 +1,6 @@
 -- Plugins: Editor
 -- https://github.com/rafi/vim-config
 
-local is_windows = vim.uv.os_uname().sysname == 'Windows_NT'
-
 return {
 
 	-----------------------------------------------------------------------------
@@ -14,24 +12,6 @@ return {
 
 	-- An alternative sudo for Vim and Neovim
 	{ 'lambdalisue/suda.vim', event = 'BufRead' },
-
-	-----------------------------------------------------------------------------
-	-- Seamless navigation between tmux panes and vim splits
-	{
-		'christoomey/vim-tmux-navigator',
-		lazy = false,
-		cond = vim.env.TMUX and not is_windows,
-		-- stylua: ignore
-		keys = {
-			{ '<C-h>', '<cmd>TmuxNavigateLeft<CR>', mode = { 'n', 't' }, silent = true, desc = 'Jump to left pane' },
-			{ '<C-j>', '<cmd>TmuxNavigateDown<CR>', mode = { 'n', 't' }, silent = true, desc = 'Jump to lower pane' },
-			{ '<C-k>', '<cmd>TmuxNavigateUp<CR>', mode = { 'n', 't' }, silent = true, desc = 'Jump to upper pane' },
-			{ '<C-l>', '<cmd>TmuxNavigateRight<CR>', mode = { 'n', 't' }, silent = true, desc = 'Jump to right pane' },
-		},
-		init = function()
-			vim.g.tmux_navigator_no_mappings = true
-		end,
-	},
 
 	-----------------------------------------------------------------------------
 	-- Simple lua plugin for automated session management
@@ -104,57 +84,6 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Highlights other uses of the word under the cursor
-	{
-		'RRethy/vim-illuminate',
-		event = { 'BufReadPost', 'BufNewFile' },
-		opts = {
-			delay = 200,
-			under_cursor = false,
-			modes_allowlist = { 'n', 'no', 'nt' },
-			filetypes_denylist = {
-				'DiffviewFileHistory',
-				'DiffviewFiles',
-				'fugitive',
-				'git',
-				'minifiles',
-				'neo-tree',
-				'Outline',
-				'SidebarNvim',
-			},
-		},
-		keys = {
-			{ ']]', desc = 'Next Reference' },
-			{ '[[', desc = 'Prev Reference' },
-		},
-		config = function(_, opts)
-			require('illuminate').configure(opts)
-
-			local function map(key, dir, buffer)
-				vim.keymap.set('n', key, function()
-					require('illuminate')['goto_' .. dir .. '_reference'](false)
-				end, {
-					desc = dir:sub(1, 1):upper() .. dir:sub(2) .. ' Reference',
-					buffer = buffer,
-				})
-			end
-
-			map(']]', 'next')
-			map('[[', 'prev')
-
-			-- also set it after loading ftplugins, since a lot overwrite [[ and ]]
-			vim.api.nvim_create_autocmd('FileType', {
-				group = vim.api.nvim_create_augroup('rafi_illuminate', {}),
-				callback = function()
-					local buffer = vim.api.nvim_get_current_buf()
-					map(']]', 'next', buffer)
-					map('[[', 'prev', buffer)
-				end,
-			})
-		end,
-	},
-
-	-----------------------------------------------------------------------------
 	-- Ultimate undo history visualizer
 	{
 		'mbbill/undotree',
@@ -170,14 +99,22 @@ return {
 		'folke/flash.nvim',
 		event = 'VeryLazy',
 		vscode = true,
-		opts = {},
+		---@diagnostic disable-next-line: undefined-doc-name
+		---@type Flash.Config
+		opts = {
+			modes = {
+				search = {
+					enabled = false,
+				},
+			},
+		},
 		-- stylua: ignore
 		keys = {
 			{ 'ss', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
 			{ 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
 			{ 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
 			{ 'R', mode = { 'x', 'o' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
-			{ '<c-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
+			{ '<C-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
 		},
 	},
 
@@ -213,11 +150,11 @@ return {
 	{
 		'folke/todo-comments.nvim',
 		event = 'LazyFile',
-		dependencies = 'nvim-telescope/telescope.nvim',
+		dependencies = { 'nvim-lua/plenary.nvim' },
 		-- stylua: ignore
 		keys = {
-			{ ']t', function() require('todo-comments').jump_next() end, desc = 'Next todo comment' },
-			{ '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous todo comment' },
+			{ ']t', function() require('todo-comments').jump_next() end, desc = 'Next Todo Comment' },
+			{ '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous Todo Comment' },
 			{ '<leader>xt', '<cmd>TodoTrouble<CR>', desc = 'Todo (Trouble)' },
 			{ '<leader>xT', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', desc = 'Todo/Fix/Fixme (Trouble)' },
 			{ '<leader>st', '<cmd>TodoTelescope<cr>', desc = 'Todo' },
@@ -248,7 +185,7 @@ return {
 						vim.cmd.cprev()
 					end
 				end,
-				desc = 'Previous trouble/quickfix item',
+				desc = 'Previous Trouble/Quickfix Item',
 			},
 			{
 				']q',
@@ -259,7 +196,7 @@ return {
 						vim.cmd.cnext()
 					end
 				end,
-				desc = 'Next trouble/quickfix item',
+				desc = 'Next Trouble/Quickfix Item',
 			},
 		},
 	},
@@ -279,7 +216,7 @@ return {
 				term:toggle()
 			end
 			local mappings = {
-				{ '<C-/>', mode = { 'n', 't' }, toggleterm, desc = 'Toggle terminal' },
+				{ '<C-/>', mode = { 'n', 't' }, toggleterm, desc = 'Toggle Terminal' },
 				{ '<C-_>', mode = { 'n', 't' }, toggleterm, desc = 'which_key_ignore' },
 			}
 			return vim.list_extend(mappings, keys)
@@ -310,14 +247,14 @@ return {
 			local filter = Config.kind_filter
 
 			if type(filter) == 'table' then
-				filter = filter.default
-				if type(filter) == 'table' then
+				local filter_opts = filter.default
+				if type(filter_opts) == 'table' then
 					for kind, symbol in pairs(defaults.symbols) do
 						opts.symbols[kind] = {
 							icon = Config.icons.kinds[kind] or symbol.icon,
 							hl = symbol.hl,
 						}
-						if not vim.tbl_contains(filter, kind) then
+						if not vim.tbl_contains(filter_opts, kind) then
 							table.insert(opts.symbol_blacklist, kind)
 						end
 					end
@@ -368,19 +305,6 @@ return {
 				},
 			},
 		},
-	},
-
-	-----------------------------------------------------------------------------
-	-- Fast Neovim http client written in Lua
-	{
-		'rest-nvim/rest.nvim',
-		main = 'rest-nvim',
-		ft = 'http',
-		cmd = 'Rest',
-		keys = {
-			{ '<Leader>mh', '<cmd>Rest run<CR>', desc = 'Execute HTTP request' },
-		},
-		opts = { skip_ssl_verification = true },
 	},
 
 	-----------------------------------------------------------------------------
@@ -442,6 +366,7 @@ return {
 				['rg'] = {
 					cmd = 'rg',
 					args = {
+						'--pcre2',
 						'--color=never',
 						'--no-heading',
 						'--with-filename',

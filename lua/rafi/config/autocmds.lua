@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 vim.api.nvim_create_autocmd('TextYankPost', {
 	group = augroup('highlight_yank'),
 	callback = function()
-		vim.highlight.on_yank({ timeout = 100 })
+		vim.highlight.on_yank({ timeout = 50 })
 	end,
 })
 
@@ -96,7 +96,7 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 vim.api.nvim_create_autocmd('BufWritePre', {
 	group = augroup('auto_create_dir'),
 	callback = function(event)
-		if event.match:match('^%w%w+://') then
+		if event.match:match("^%w%w+:[\\/][\\/]") then
 			return
 		end
 		local file = vim.uv.fs_realpath(event.match) or event.match

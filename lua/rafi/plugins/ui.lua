@@ -12,7 +12,7 @@ return {
 	{ 'MunifTanjim/nui.nvim', lazy = false },
 
 	-----------------------------------------------------------------------------
-	-- Fancy notification manager for NeoVim
+	-- Fancy notification manager
 	{
 		'rcarriga/nvim-notify',
 		priority = 9000,
@@ -22,10 +22,11 @@ return {
 				function()
 					require('notify').dismiss({ silent = true, pending = true })
 				end,
-				desc = 'Dismiss all Notifications',
+				desc = 'Dismiss All Notifications',
 			},
 		},
 		opts = {
+			stages = 'static',
 			timeout = 3000,
 			max_height = function()
 				return math.floor(vim.o.lines * 0.75)
@@ -73,11 +74,11 @@ return {
 		enabled = not vim.g.started_by_firenvim,
 		-- stylua: ignore
 		keys = {
-			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle pin' },
-			{ '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete non-pinned buffers' },
-			{ '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', desc = 'Delete other buffers' },
-			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete buffers to the right' },
-			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete buffers to the left' },
+			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle Pin' },
+			{ '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-Pinned Buffers' },
+			{ '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', desc = 'Delete Other Buffers' },
+			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the Right' },
+			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the Left' },
 			{ '<leader>tp', '<Cmd>BufferLinePick<CR>', desc = 'Tab Pick' },
 		},
 		opts = {
@@ -93,6 +94,12 @@ return {
 				-- indicator = {
 				-- 	style = 'underline',
 				-- },
+				close_command = function(n)
+					LazyVim.ui.bufremove(n)
+				end,
+				right_mouse_command = function(n)
+					LazyVim.ui.bufremove(n)
+				end,
 				diagnostics_indicator = function(_, _, diag)
 					local icons = require('lazyvim.config').icons.diagnostics
 					local ret = (diag.error and icons.Error .. diag.error .. ' ' or '')
@@ -127,7 +134,7 @@ return {
 		config = function(_, opts)
 			require('bufferline').setup(opts)
 			-- Fix bufferline when restoring a session
-			vim.api.nvim_create_autocmd('BufAdd', {
+			vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
 				callback = function()
 					vim.schedule(function()
 						---@diagnostic disable-next-line: undefined-global
@@ -150,8 +157,9 @@ return {
 			{ '<leader>snl', function() require('noice').cmd('last') end, desc = 'Noice Last Message' },
 			{ '<leader>snh', function() require('noice').cmd('history') end, desc = 'Noice History' },
 			{ '<leader>sna', function() require('noice').cmd('all') end, desc = 'Noice All' },
-			{ '<C-f>', function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end, silent = true, expr = true, desc = 'Scroll forward', mode = {'i', 'n', 's'} },
-			{ '<C-b>', function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end, silent = true, expr = true, desc = 'Scroll backward', mode = {'i', 'n', 's'}},
+			{ '<leader>snt', function() require('noice').cmd('telescope') end, desc = 'Noice Telescope' },
+			{ '<C-f>', function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end, silent = true, expr = true, desc = 'Scroll Forward', mode = {'i', 'n', 's'} },
+			{ '<C-b>', function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end, silent = true, expr = true, desc = 'Scroll Backward', mode = {'i', 'n', 's'}},
 		},
 		---@type NoiceConfig
 		opts = {
@@ -215,13 +223,6 @@ return {
 				lsp_doc_border = true,
 				-- inc_rename = true,
 			},
-			commands = {
-				all = {
-					view = 'split',
-					opts = { enter = true, format = 'details' },
-					filter = {},
-				},
-			},
 		},
 	},
 
@@ -271,7 +272,6 @@ return {
 	-- Interacting with and manipulating marks
 	{
 		'chentoast/marks.nvim',
-		dependencies = 'lewis6991/gitsigns.nvim',
 		event = 'FileType',
 		keys = {
 			{ 'm/', '<cmd>MarksListAll<CR>', desc = 'Marks from all opened buffers' },
@@ -299,12 +299,8 @@ return {
 				-- See more characters at :h ibl.config.indent.char
 				char = '│', -- ▏│
 				tab_char = '│',
-				-- priority = 100, -- Display over folded lines
 			},
 			scope = { enabled = false },
-			-- whitespace = {
-			-- 	remove_blankline_trail = false,
-			-- },
 			exclude = {
 				filetypes = {
 					'alpha',
@@ -329,12 +325,18 @@ return {
 				},
 			},
 		},
+		config = function(_, opts)
+			if vim.fn.has('nvim-0.10.0') == 0 then
+				local utils = require('ibl.utils')
+				---@diagnostic disable-next-line: deprecated
+				utils.tbl_join = vim.tbl_flatten
+			end
+			require('ibl').setup(opts)
+		end,
 	},
 
 	-----------------------------------------------------------------------------
-	-- Active indent guide and indent text objects. When you're browsing
-	-- code, this highlights the current level of indentation, and animates
-	-- the highlighting.
+	-- Visualize and operate on indent scope
 	{
 		'echasnovski/mini.indentscope',
 		event = 'LazyFile',
@@ -436,7 +438,7 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Better quickfix window in Neovim
+	-- Better quickfix window
 	{
 		'kevinhwang91/nvim-bqf',
 		ft = 'qf',
@@ -492,6 +494,18 @@ return {
 			highlighter = {
 				auto_enable = true,
 				lsp = true,
+				filetypes = {
+					'html',
+					'lua',
+					'css',
+					'scss',
+					'sass',
+					'less',
+					'stylus',
+					'javascript',
+					'tmux',
+					'typescript',
+				},
 				excludes = { 'lazy', 'mason', 'help', 'neo-tree' },
 			},
 		},

@@ -17,9 +17,17 @@ return {
 			'hrsh7th/cmp-path',
 			-- nvim-cmp source for emoji
 			'hrsh7th/cmp-emoji',
-			-- nvim-cmp source for tmux
-			'andersevenrud/cmp-tmux',
 		},
+		-- Not all LSP servers add brackets when completing a function.
+		-- To better deal with this, LazyVim adds a custom option to cmp,
+		-- that you can configure. For example:
+		--
+		-- ```lua
+		-- opts = {
+		--   auto_brackets = { "python" }
+		-- }
+		-- ```
+
 		opts = function()
 			vim.api.nvim_set_hl(
 				0,
@@ -28,8 +36,14 @@ return {
 			)
 			local cmp = require('cmp')
 			local defaults = require('cmp.config.default')()
+			local Util = require('rafi.util')
 
 			return {
+				-- configure any filetype to auto add brackets
+				auto_brackets = { 'python' },
+				view = {
+					entries = { follow_cursor = true },
+				},
 				sorting = defaults.sorting,
 				experimental = {
 					ghost_text = {
@@ -42,12 +56,6 @@ return {
 				}, {
 					{ name = 'buffer', priority = 50, keyword_length = 3 },
 					{ name = 'emoji', insert = true, priority = 20 },
-					{
-						name = 'tmux',
-						priority = 10,
-						keyword_length = 3,
-						option = { all_panes = true, label = 'tmux' },
-					},
 				}),
 				mapping = cmp.mapping.preset.insert({
 					-- <CR> accepts currently selected item.
@@ -58,6 +66,14 @@ return {
 						select = false,
 					}),
 					['<C-Space>'] = cmp.mapping.complete(),
+					['<Tab>'] = Util.cmp.supertab({
+						behavior = require('cmp').SelectBehavior.Select,
+					}),
+					['<S-Tab>'] = Util.cmp.supertab_shift({
+						behavior = require('cmp').SelectBehavior.Select,
+					}),
+					['<C-j>'] = Util.cmp.snippet_jump_forward(),
+					['<C-k>'] = Util.cmp.snippet_jump_backward(),
 					['<C-n>'] = cmp.mapping.select_next_item({
 						behavior = cmp.SelectBehavior.Insert,
 					}),
@@ -97,12 +113,30 @@ return {
 				},
 			}
 		end,
-		---@param opts cmp.ConfigSchema
+		---@param opts cmp.ConfigSchema | {auto_brackets?: string[]}
 		config = function(_, opts)
 			for _, source in ipairs(opts.sources) do
 				source.group_index = source.group_index or 1
 			end
-			require('cmp').setup(opts)
+			local cmp = require('cmp')
+			local Kind = cmp.lsp.CompletionItemKind
+			cmp.setup(opts)
+			cmp.event:on('confirm_done', function(event)
+				if not vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
+					return
+				end
+				local entry = event.entry
+				local item = entry:get_completion_item()
+				if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) and item.insertTextFormat ~= 2 then
+					local cursor = vim.api.nvim_win_get_cursor(0)
+					local prev_char = vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
+					if prev_char ~= '(' and prev_char ~= ')' then
+						local keys =
+							vim.api.nvim_replace_termcodes('()<left>', false, false, true)
+						vim.api.nvim_feedkeys(keys, 'i', true)
+					end
+				end
+			end)
 		end,
 	},
 
@@ -111,7 +145,7 @@ return {
 	{
 		'L3MON4D3/LuaSnip',
 		event = 'InsertEnter',
-		build = (not jit.os:find('Windows'))
+		build = (not LazyVim.is_win())
 				and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
 			or nil,
 		dependencies = {
@@ -123,10 +157,12 @@ return {
 					require('luasnip.loaders.from_lua').load({ paths = { './snippets' } })
 				end,
 			},
+			-- Adds luasnip source to nvim-cmp.
 			{
 				'nvim-cmp',
 				dependencies = {
-					{ 'saadparwaiz1/cmp_luasnip' },
+					-- Luasnip completion source for nvim-cmp
+					'saadparwaiz1/cmp_luasnip',
 				},
 				opts = function(_, opts)
 					opts.snippet = {
@@ -135,13 +171,6 @@ return {
 						end,
 					}
 					table.insert(opts.sources, { name = 'luasnip', keyword_length = 2 })
-
-					local Util = require('rafi.util')
-					local behavior = { behavior = require('cmp').SelectBehavior.Select }
-					opts.mapping['<Tab>'] = Util.cmp.luasnip_supertab(behavior)
-					opts.mapping['<S-Tab>'] = Util.cmp.luasnip_shift_supertab(behavior)
-					opts.mapping['<C-j>'] = Util.cmp.luasnip_jump_forward()
-					opts.mapping['<C-b>'] = Util.cmp.luasnip_jump_backward()
 				end,
 			},
 		},
@@ -176,14 +205,13 @@ return {
 			{
 				'<leader>up',
 				function()
-					local Util = require('lazy.core.util')
 					vim.g.autopairs_disable = not vim.g.autopairs_disable
 					if vim.g.autopairs_disable then
 						require('nvim-autopairs').disable()
-						Util.warn('Disabled auto pairs', { title = 'Option' })
+						LazyVim.warn('Disabled auto pairs', { title = 'Option' })
 					else
 						require('nvim-autopairs').enable()
-						Util.info('Enabled auto pairs', { title = 'Option' })
+						LazyVim.info('Enabled auto pairs', { title = 'Option' })
 					end
 				end,
 				desc = 'Toggle auto pairs',
@@ -196,9 +224,9 @@ return {
 			if not LazyVim.has('nvim-cmp') then
 				-- Insert `(` after function or method item selection.
 				local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-				require('cmp').event:on("confirm_done", cmp_autopairs.on_confirm_done())
+				require('cmp').event:on('confirm_done', cmp_autopairs.on_confirm_done())
 			end
-		end
+		end,
 	},
 
 	-----------------------------------------------------------------------------
@@ -211,12 +239,12 @@ return {
 			local plugin = require('lazy.core.config').spec.plugins['mini.surround']
 			local opts = require('lazy.core.plugin').values(plugin, 'opts', false)
 			local mappings = {
-				{ opts.mappings.add, desc = 'Add surrounding', mode = { 'n', 'x' } },
-				{ opts.mappings.delete, desc = 'Delete surrounding' },
-				{ opts.mappings.find, desc = 'Find right surrounding' },
-				{ opts.mappings.find_left, desc = 'Find left surrounding' },
-				{ opts.mappings.highlight, desc = 'Highlight surrounding' },
-				{ opts.mappings.replace, desc = 'Replace surrounding' },
+				{ opts.mappings.add, desc = 'Add Surrounding', mode = { 'n', 'v' } },
+				{ opts.mappings.delete, desc = 'Delete Surrounding' },
+				{ opts.mappings.find, desc = 'Find Right Surrounding' },
+				{ opts.mappings.find_left, desc = 'Find Left Surrounding' },
+				{ opts.mappings.highlight, desc = 'Highlight Surrounding' },
+				{ opts.mappings.replace, desc = 'Replace Surrounding' },
 				{ opts.mappings.update_n_lines, desc = 'Update `MiniSurround.config.n_lines`' },
 			}
 			mappings = vim.tbl_filter(function(m)
@@ -248,24 +276,24 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Fast and familiar per-line commenting
+	-- Powerful line and block-wise commenting
 	{
-		'echasnovski/mini.comment',
+		'numToStr/Comment.nvim',
+		-- stylua: ignore
 		event = 'VeryLazy',
 		dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
-		-- stylua: ignore
 		keys = {
-			{ '<Leader>v', 'gcc', remap = true, silent = true, mode = 'n', desc = 'Comment' },
-			{ '<Leader>v', 'gc', remap = true, silent = true, mode = 'x', desc = 'Comment' },
+			{ '<Leader>v', '<Plug>(comment_toggle_linewise_current)', mode = 'n', desc = 'Comment' },
+			{ '<Leader>v', '<Plug>(comment_toggle_linewise_visual)', mode = 'x', desc = 'Comment' },
+			{ '<Leader>V', '<Plug>(comment_toggle_blockwise_current)', mode = 'n', desc = 'Comment' },
+			{ '<Leader>V', '<Plug>(comment_toggle_blockwise_visual)', mode = 'x', desc = 'Comment' },
 		},
-		opts = {
-			options = {
-				custom_commentstring = function()
-					return require('ts_context_commentstring.internal').calculate_commentstring()
-						or vim.bo.commentstring
-				end,
-			},
-		},
+		opts = function(_, opts)
+			local ok, tcc = pcall(require, 'ts_context_commentstring.integrations.comment_nvim')
+			if ok then
+				opts.pre_hook = tcc.create_pre_hook()
+			end
+		end
 	},
 
 	-----------------------------------------------------------------------------

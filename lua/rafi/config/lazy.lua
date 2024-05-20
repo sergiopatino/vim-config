@@ -1,13 +1,20 @@
 -- Rafael Bodill's lazy.nvim initialization
 -- https://github.com/rafi/vim-config
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
-	print('Installing lazy.nvim…')
-	-- stylua: ignore
-	vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', 'https://github.com/folke/lazy.nvim.git', lazypath })
+-- Clone bootstrap repositories if not already installed.
+vim.uv = vim.uv or vim.loop
+local function clone(remote, dest)
+	if not vim.uv.fs_stat(dest) then
+		print('Installing ' .. dest .. '…')
+		-- stylua: ignore
+		vim.fn.system({ 'git', 'clone', '--filter=blob:none', remote, '--branch=stable', dest })
+	end
 end
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+clone('https://github.com/folke/lazy.nvim.git', lazypath)
+---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+clone('https://github.com/LazyVim/LazyVim.git', vim.fn.stdpath('data') .. '/lazy/LazyVim')
 
 -- Load user options from lua/config/setup.lua
 local user_lazy_opts = {}
@@ -17,8 +24,7 @@ if ok and user_setup.lazy_opts then
 end
 
 -- Validate if lua/plugins/ or lua/plugins.lua exist.
-local stdconfig = vim.fn.stdpath('config')
-local user_path = stdconfig .. '/lua'
+local user_path = vim.fn.stdpath('config') .. '/lua'
 local has_user_plugins = vim.uv.fs_stat(user_path .. '/plugins') ~= nil
 	or vim.uv.fs_stat(user_path .. '/plugins.lua') ~= nil
 
@@ -26,6 +32,7 @@ local has_user_plugins = vim.uv.fs_stat(user_path .. '/plugins') ~= nil
 require('lazy').setup(vim.tbl_extend('keep', user_lazy_opts, {
 	spec = {
 		-- Load LazyVim, but without any plugins (no import).
+		-- See all options in lua/rafi/plugins/lazyvim.lua
 		{
 			'LazyVim/LazyVim',
 			version = '*',
@@ -34,15 +41,13 @@ require('lazy').setup(vim.tbl_extend('keep', user_lazy_opts, {
 			cond = true,
 			opts = {},
 			config = function(_, opts)
-				-- Setup and override options with user config at lua/config/setup.lua
-				local RafiConfig = require('rafi.config')
-				RafiConfig.setup(user_setup.opts and user_setup.opts() or {})
+				-- Load lua/rafi/config/*
+				require('rafi.config').setup()
 				-- Setup lazyvim, but don't load lazyvim/config/* files.
 				package.loaded['lazyvim.config.options'] = true
-				opts = vim.tbl_deep_extend('force', RafiConfig.opts(), opts)
 				require('lazyvim.config').setup(vim.tbl_deep_extend('force', opts, {
 					defaults = { autocmds = false, keymaps = false },
-					news = { lazyvim = false }
+					news = { lazyvim = false },
 				}))
 			end,
 		},
