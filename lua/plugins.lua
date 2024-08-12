@@ -1,20 +1,5 @@
 return {
 
-	-- Enable GitHub's Copilot
-  { import = 'lazyvim.plugins.extras.coding.copilot' },
-
-	-- Enable yaml plugins
-	{ import = "lazyvim.plugins.extras.lang.yaml" },
-
-	-- Enable go plugins
-	{ import = "lazyvim.plugins.extras.lang.go" },
-
-	-- Enable docker plugins
-	{ import = "lazyvim.plugins.extras.lang.docker" },
-
-	-- Enable python plugins
-	{ import = "lazyvim.plugins.extras.lang.python" },
-
 	-- Accerelated-jk plugin
 	{
 		"rainbowhxch/accelerated-jk.nvim",
