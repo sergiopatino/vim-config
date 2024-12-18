@@ -4,6 +4,3 @@
 /.stignore
 /.stfolder
 /.stversions
-/lua/lsp/
-/lua/plugins/
-/lua/plugins.lua
