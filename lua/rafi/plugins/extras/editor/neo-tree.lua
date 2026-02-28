@@ -18,6 +18,7 @@ return {
 	-- File explorer written in Lua
 	-- NOTE: This extends
 	-- $XDG_DATA_HOME/nvim/lazy/LazyVim/lua/lazyvim/plugins/extras/editor/neo-tree.lua
+	{
 	'neo-tree.nvim',
 	branch = 'v3.x',
 	cmd = 'Neotree',
@@ -66,11 +67,18 @@ return {
 		},
 
 		event_handlers = {
-			-- Close neo-tree when opening a file.
+			-- Close neo-tree when opening a file (including in new tabs).
 			{
 				event = 'file_opened',
 				handler = function()
-					require('neo-tree.command').execute({ action = 'close' })
+					vim.schedule(function()
+						for _, win in ipairs(vim.api.nvim_list_wins()) do
+							local buf = vim.api.nvim_win_get_buf(win)
+							if vim.bo[buf].filetype == 'neo-tree' then
+								vim.api.nvim_win_close(win, false)
+							end
+						end
+					end)
 				end,
 			},
 		},
@@ -250,6 +258,7 @@ return {
 			},
 
 			filtered_items = {
+				visible = true,
 				hide_dotfiles = false,
 				hide_gitignored = false,
 				hide_by_name = {
@@ -295,5 +304,6 @@ return {
 				},
 			},
 		},
+	},
 	},
 }
