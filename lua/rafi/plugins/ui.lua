@@ -4,6 +4,12 @@
 return {
 
 	-----------------------------------------------------------------------------
+	-- Replaces the UI for messages, cmdline and the popupmenu
+	-- NOTE: This extends
+	-- $XDG_DATA_HOME/nvim/lazy/LazyVim/lua/lazyvim/plugins/ui.lua
+	{ 'noice.nvim', enabled = false },
+
+	-----------------------------------------------------------------------------
 	-- Snazzy tab/bufferline
 	-- NOTE: This extends
 	-- $XDG_DATA_HOME/nvim/lazy/LazyVim/lua/lazyvim/plugins/ui.lua
@@ -14,7 +20,6 @@ return {
 		keys = {
 			{ '<S-h>', false },
 			{ '<S-l>', false },
-			{ '<leader>tp', '<Cmd>BufferLinePick<CR>', desc = 'Tab Pick' },
 		},
 		opts = {
 			options = {
@@ -57,56 +62,6 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Replaces the UI for messages, cmdline and the popupmenu
-	-- NOTE: This extends
-	-- $XDG_DATA_HOME/nvim/lazy/LazyVim/lua/lazyvim/plugins/ui.lua
-	{
-		'noice.nvim',
-		enabled = not vim.g.started_by_firenvim,
-		---@type NoiceConfig
-		opts = {
-			lsp = {
-				override = {
-					['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-					['vim.lsp.util.stylize_markdown'] = true,
-					['cmp.entry.get_documentation'] = true,
-				},
-			},
-			messages = {
-				view_search = false,
-			},
-			presets = {
-				bottom_search = true,
-				command_palette = true,
-				long_message_to_split = true,
-				lsp_doc_border = true,
-			},
-			routes = {
-				-- See :h ui-messages
-				{
-					filter = {
-						event = 'msg_show',
-						any = {
-							{ find = '%d+L, %d+B' },
-							{ find = '^%d+ changes?; after #%d+' },
-							{ find = '^%d+ changes?; before #%d+' },
-							{ find = '^Hunk %d+ of %d+$' },
-							{ find = '^%d+ fewer lines;?' },
-							{ find = '^%d+ more lines?;?' },
-							{ find = '^%d+ line less;?' },
-							{ find = '^Already at newest change' },
-							{ kind = 'wmsg' },
-							{ kind = 'emsg', find = 'E486' },
-							{ kind = 'quickfix' },
-						},
-					},
-					view = 'mini',
-				},
-			},
-		},
-	},
-
-	-----------------------------------------------------------------------------
 	-- Collection of small QoL plugins
 	-- NOTE: This extends
 	-- $XDG_DATA_HOME/nvim/lazy/LazyVim/lua/lazyvim/plugins/ui.lua
@@ -135,7 +90,7 @@ return {
 					---@diagnostic disable-next-line: missing-fields
 					Snacks.win({
 						file = vim.api.nvim_get_runtime_file('doc/news.txt', false)[1],
-						border = 'rounded',
+						border = vim.o.winborder,
 						width = 0.6,
 						height = 0.6,
 						wo = {
